@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>ULTRA-DYNAMIC HSL LIQUID GLASS</title>
+    <title>ULTRA-DYNAMIC HSL RAINBOW INTERFACE</title>
     <style>
         /* ==========================================================================================
            1. CORE SYSTEM ARCHITECTURE & RESET
@@ -11,22 +11,31 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
             width: 100%; height: 100%; 
-            background: #000; 
+            /* Animated Rainbow Background Gradient */
+            background: linear-gradient(-45deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
+            background-size: 400% 400%;
+            animation: gradientShift 15s ease infinite;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            overflow: hidden; 
+            overflow-x: hidden; 
+        }
+
+        @keyframes gradientShift {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
         }
 
         /* ==========================================================================================
-           2. MATHEMATICAL HSL RAINBOW ENGINE (LIQUID MOTION)
+           2. MATHEMATICAL HSL RAINBOW OVERLAY LAYER
            ========================================================================================== */
-        .ambient-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; }
+        .ambient-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         
         .rainbow-blob {
             position: absolute;
             width: 70vw; height: 70vw;
             border-radius: 50%;
-            filter: blur(160px);
-            opacity: 0.7;
+            filter: blur(120px);
+            opacity: 0.4;
             will-change: transform, background;
             transition: background 0.1s linear;
         }
@@ -42,53 +51,58 @@
         .glass-pill {
             position: relative;
             width: 90%; max-width: 700px; height: 95px;
-            background: rgba(255, 255, 255, 0.08);
+            background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(35px);
             -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             border-radius: 60px;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 1.4rem; font-weight: 700;
             cursor: pointer;
             transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             text-transform: uppercase; letter-spacing: 2px;
         }
 
         .glass-pill:hover {
             transform: scale(1.03) translateY(-5px);
-            background: rgba(255, 255, 255, 0.15);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+            background: rgba(255, 255, 255, 0.25);
+            border: 1px solid rgba(255, 255, 255, 0.6);
+            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
         }
 
         /* ==========================================================================================
-           4. FULLSCREEN OVERLAY & LIQUID VOLUME CONTROLS
+           4. VIDEO PLAYER CENTERED OVERLAY
            ========================================================================================== */
         #videoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.98); backdrop-filter: blur(50px);
+            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
             display: none; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; transition: opacity 0.7s ease;
+            z-index: 1000; opacity: 0; transition: opacity 0.5s ease;
         }
 
-        #mainVideo { width: 100%; height: 100%; object-fit: contain; }
+        #mainVideo { 
+            width: 80%; max-width: 900px; height: auto;
+            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            border: 2px solid rgba(255,255,255,0.2);
+            background: #000;
+        }
 
         .controls {
             position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
-            padding: 20px 40px; background: rgba(255,255,255,0.1); border-radius: 50px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.2);
+            padding: 20px 40px; background: rgba(255,255,255,0.2); border-radius: 50px;
+            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3);
         }
 
         .x-close {
             position: absolute; top: 40px; right: 40px; width: 60px; height: 60px;
-            background: rgba(255,255,255,0.1); border-radius: 50%;
+            background: rgba(255,255,255,0.2); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 25px; cursor: pointer; transition: 0.3s;
             z-index: 1001;
         }
 
-        .x-close:hover { background: rgba(255,255,255,0.3); transform: rotate(90deg); }
+        .x-close:hover { background: rgba(255,255,255,0.4); transform: rotate(90deg); }
         input[type=range] { width: 200px; cursor: pointer; accent-color: white; }
     </style>
 </head>
@@ -108,7 +122,7 @@
 
     <div id="videoOverlay">
         <div class="x-close" onclick="closeVideo()">✕</div>
-        <video id="mainVideo"></video>
+        <video id="mainVideo" controls></video>
         <div class="controls">
             <span style="color:white; font-weight:bold;">VOLUME</span>
             <input type="range" min="0" max="1" step="0.1" value="0.5" oninput="setVol(this.value)">
@@ -116,9 +130,7 @@
     </div>
 
     <script>
-        /* ==========================================================================================
-           5. HSL MATH CYCLE & SYSTEM LOGIC
-           ========================================================================================== */
+        /* HSL MATH CYCLE FOR AMBIENT BLOB OVERLAYS */
         let hue = 0;
         const blobs = document.querySelectorAll('.rainbow-blob');
 
@@ -147,7 +159,7 @@
                 vid.pause();
                 vid.src = '';
                 ov.style.display = 'none';
-            }, 700);
+            }, 500);
         }
 
         function setVol(val) { vid.volume = val; }
