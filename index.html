@@ -11,7 +11,7 @@
            ========================================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
-            width: 100%; height: 100%; 
+            width: 100%; min-height: 100%; 
             /* Animated Rainbow Background Gradient */
             background: linear-gradient(-45deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
             background-size: 400% 400%;
@@ -29,7 +29,7 @@
         /* ==========================================================================================
            2. MATHEMATICAL HSL RAINBOW OVERLAY LAYER
            ========================================================================================== */
-        .ambient-wrapper { position: fixed; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
+        .ambient-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
         
         .rainbow-blob {
             position: absolute;
@@ -45,8 +45,13 @@
            3. IOS-STYLE GLASS INTERFACE
            ========================================================================================== */
         .viewport { 
-            display: flex; flex-direction: column; align-items: center; 
-            justify-content: center; height: 100vh; gap: 30px; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            /* Remove height: 100vh; */
+            min-height: 100vh; /* Ensures it at least fills the screen */
+            padding: 50px 0;    /* Adds space at the top and bottom so buttons aren't flush against the edges */
+            gap: 30px; 
         }
         
         .glass-pill {
