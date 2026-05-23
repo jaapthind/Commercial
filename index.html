@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Commercial Interface | Premium Liquid Glass</title>
+    <style>
+        /* ==========================================================================
+           1. CSS VARIABLES & SYSTEM ARCHITECTURE
+           ========================================================================== */
+        :root {
+            --glass-bg: rgba(255, 255, 255, 0.08);
+            --glass-border: rgba(255, 255, 255, 0.15);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --accent-gradient: linear-gradient(135deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
+            --text-color: #ffffff;
+            --font-main: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+        }
+
+        /* ==========================================================================
+           2. ANIMATED BACKGROUND LAYER
+           ========================================================================== */
+        body, html {
+            margin: 0;
+            padding: 0;
+            width: 100%;
+            height: 100%;
+            background: #050505;
+            font-family: var(--font-main);
+            overflow-x: hidden;
+        }
+
+        .bg-dynamic {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: radial-gradient(circle at 50% 50%, #1a1a1a, #000);
+            z-index: -2;
+        }
+
+        .bg-rainbow-flow {
+            position: fixed;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: var(--accent-gradient);
+            background-size: 200% 200%;
+            animation: rotateBackground 20s linear infinite;
+            opacity: 0.15;
+            z-index: -1;
+            filter: blur(100px);
+        }
+
+        @keyframes rotateBackground {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+
+        /* ==========================================================================
+           3. MAIN LAYOUT & PILL BUTTON ENGINE
+           ========================================================================== */
+        .viewport-wrapper {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 100px 20px;
+            gap: 30px;
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .pill-btn {
+            position: relative;
+            width: 100%;
+            max-width: 800px;
+            height: 90px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(25px);
+            -webkit-backdrop-filter: blur(25px);
+            border: 1px solid var(--glass-border);
+            border-radius: 100px; /* Perfect Pill Shape */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: var(--text-color);
+            font-size: 1.5rem;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.6s cubic-bezier(0.23, 1, 0.32, 1);
+            overflow: hidden;
+            box-shadow: var(--glass-shadow);
+        }
+
+        .pill-btn:hover {
+            transform: translateY(-5px) scale(1.02);
+            background: rgba(255, 255, 255, 0.15);
+            border-color: rgba(255, 255, 255, 0.4);
+            box-shadow: 0 15px 45px rgba(0,0,0,0.5);
+        }
+
+        /* ==========================================================================
+           4. ADVANCED VIDEO OVERLAY SYSTEM
+           ========================================================================== */
+        #videoOverlay {
+            position: fixed;
+            top: 0; left: 0;
+            width: 100%; height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            backdrop-filter: blur(50px);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+
+        #mainVideo {
+            width: 90%;
+            height: 90%;
+            object-fit: contain;
+            border-radius: 40px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+        }
+
+        .close-btn {
+            position: absolute;
+            top: 50px; right: 50px;
+            width: 60px; height: 60px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            color: white;
+            font-size: 24px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+
+        .close-btn:hover {
+            background: rgba(255, 255, 255, 0.3);
+            transform: rotate(90deg);
+        }
+    </style>
+</head>
+<body>
+
+    <div class="bg-dynamic"></div>
+    <div class="bg-rainbow-flow"></div>
+
+    <div class="viewport-wrapper">
+        <!-- ADD NEW PILL BUTTONS BELOW -->
+        <button class="pill-btn" onclick="openVideo('Funny.mp4')">COMMERCIAL ONE</button>
+        <button class="pill-btn" onclick="openVideo('commercial.mp4')">COMMERCIAL TWO</button>
+        <button class="pill-btn" onclick="openVideo('commercial3.mp4')">COMMERCIAL THREE</button>
+    </div>
+
+    <div id="videoOverlay">
+        <button class="close-btn" onclick="closeVideo()">✕</button>
+        <video id="mainVideo" controls></video>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('videoOverlay');
+        const videoPlayer = document.getElementById('mainVideo');
+
+        function openVideo(file) {
+            videoPlayer.src = file;
+            overlay.style.display = 'flex';
+            // Force browser reflow to trigger animation
+            requestAnimationFrame(() => {
+                overlay.style.opacity = '1';
+                videoPlayer.play();
+            });
+        }
+
+        function closeVideo() {
+            overlay.style.opacity = '0';
+            setTimeout(() => {
+                videoPlayer.pause();
+                videoPlayer.src = '';
+                overlay.style.display = 'none';
+            }, 500);
+        }
+    </script>
+</body>
+</html>
