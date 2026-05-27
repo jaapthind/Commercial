@@ -3,114 +3,77 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Liquid Glass Premium Vault</title>
+    <title>Liquid Glass Vault</title>
     <style>
         /* ==========================================================================================
-           1. CSS VARIABLES & THEME ARCHITECTURE
+           1. CORE VARIABLES & LIQUID THEME
            ========================================================================================== */
         :root {
-            /* Rainbow Gradient Colors */
-            --color-red: #ff0055;
-            --color-orange: #ffcc00;
-            --color-green: #33ff33;
-            --color-cyan: #00ffff;
-            --color-blue: #0066ff;
-            --color-purple: #cc00ff;
+            /* Rainbow Fluid Palette */
+            --fluid-1: #ff0055;
+            --fluid-2: #ffcc00;
+            --fluid-3: #33ff33;
+            --fluid-4: #00ffff;
+            --fluid-5: #0066ff;
+            --fluid-6: #cc00ff;
 
-            /* Liquid Glass Morphism Parameters */
-            --glass-bg-ultra-light: rgba(255, 255, 255, 0.03);
-            --glass-bg-light: rgba(255, 255, 255, 0.08);
-            --glass-bg-medium: rgba(255, 255, 255, 0.15);
-            --glass-bg-heavy: rgba(255, 255, 255, 0.25);
-            --glass-bg-solid: rgba(255, 255, 255, 0.4);
-
+            /* Advanced Liquid Glass Morphism */
+            --glass-bg-base: rgba(255, 255, 255, 0.05);
+            --glass-bg-hover: rgba(255, 255, 255, 0.15);
+            --glass-gradient: linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.02) 100%);
+            --glass-gradient-hover: linear-gradient(135deg, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0.05) 100%);
+            
             --glass-border-light: rgba(255, 255, 255, 0.1);
-            --glass-border-medium: rgba(255, 255, 255, 0.2);
-            --glass-border-heavy: rgba(255, 255, 255, 0.4);
+            --glass-border-highlight: rgba(255, 255, 255, 0.4);
             --glass-border-glow: rgba(255, 255, 255, 0.8);
 
-            --glass-blur-sm: 10px;
-            --glass-blur-md: 20px;
-            --glass-blur-lg: 35px;
-            --glass-blur-xl: 50px;
+            --glass-blur: 40px;
+            --glass-saturate: 120%;
 
-            /* Shadows & Depth */
-            --shadow-sm: 0 4px 15px rgba(0, 0, 0, 0.1);
-            --shadow-md: 0 10px 30px rgba(0, 0, 0, 0.2);
-            --shadow-lg: 0 20px 50px rgba(0, 0, 0, 0.3);
-            --shadow-xl: 0 30px 60px rgba(0, 0, 0, 0.5);
-            --shadow-glow: 0 0 30px rgba(255, 255, 255, 0.2);
-            --shadow-glow-active: 0 0 50px rgba(255, 255, 255, 0.5);
+            /* Depth & Refraction Shadows */
+            --shadow-glass: 0 8px 32px 0 rgba(0, 0, 0, 0.37);
+            --shadow-glass-hover: 0 15px 40px 0 rgba(0, 0, 0, 0.5), 0 0 30px rgba(255, 255, 255, 0.15);
+            --inner-glow: inset 0 0 20px rgba(255, 255, 255, 0.1);
 
             /* Typography */
-            --font-family-primary: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            --text-color-primary: #ffffff;
-            --text-color-secondary: rgba(255, 255, 255, 0.7);
-            --text-color-tertiary: rgba(255, 255, 255, 0.5);
+            --font-main: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            --text-primary: #ffffff;
+            --text-secondary: rgba(255, 255, 255, 0.7);
 
-            /* Transitions & Easing */
-            --ease-out-expo: cubic-bezier(0.19, 1, 0.22, 1);
-            --ease-in-out-circ: cubic-bezier(0.785, 0.135, 0.15, 0.86);
-            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            /* Easing */
             --ease-liquid: cubic-bezier(0.25, 0.1, 0.25, 1);
-            
-            --transition-fast: 0.2s var(--ease-out-expo);
-            --transition-medium: 0.4s var(--ease-out-expo);
-            --transition-slow: 0.8s var(--ease-liquid);
-
-            /* Layout Dimensions */
-            --header-height: 120px;
-            --card-height: 220px;
-            --border-radius-sm: 12px;
-            --border-radius-md: 24px;
-            --border-radius-lg: 40px;
-            --border-radius-pill: 100px;
+            --ease-spring: cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
 
         /* ==========================================================================================
-           2. GLOBAL RESET & BASE STYLES
+           2. RESET & BASE STYLES
            ========================================================================================== */
-        *, *::before, *::after {
+        * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            user-select: none;
-            -webkit-user-drag: none;
             -webkit-tap-highlight-color: transparent;
         }
 
-        html {
-            font-size: 16px;
+        html, body {
+            width: 100vw;
+            min-height: 100vh;
+            font-family: var(--font-main);
+            color: var(--text-primary);
+            background-color: #050505;
+            overflow-x: hidden;
             scroll-behavior: smooth;
         }
 
-        body {
-            width: 100vw;
-            min-height: 100vh;
-            font-family: var(--font-family-primary);
-            color: var(--text-color-primary);
-            background-color: #000;
-            overflow-x: hidden;
-            cursor: none; /* Custom cursor */
-        }
-
-        /* Custom Scrollbar for Webkit */
+        /* Elegant Scrollbar */
         ::-webkit-scrollbar {
-            width: 12px;
-            background: rgba(0, 0, 0, 0.5);
+            width: 10px;
+            background: #000;
         }
-
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05);
-            border-radius: 10px;
-        }
-
         ::-webkit-scrollbar-thumb {
             background: rgba(255, 255, 255, 0.2);
-            border-radius: 10px;
-            border: 2px solid rgba(0, 0, 0, 0.5);
+            border-radius: 5px;
         }
-
         ::-webkit-scrollbar-thumb:hover {
             background: rgba(255, 255, 255, 0.4);
         }
@@ -120,146 +83,59 @@
            ========================================================================================== */
         .bg-container {
             position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
+            top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: -100;
             overflow: hidden;
-            pointer-events: none;
             background: linear-gradient(
                 -45deg, 
-                var(--color-red), 
-                var(--color-orange), 
-                var(--color-green), 
-                var(--color-cyan), 
-                var(--color-blue), 
-                var(--color-purple)
+                var(--fluid-1), var(--fluid-2), var(--fluid-3), 
+                var(--fluid-4), var(--fluid-5), var(--fluid-6)
             );
             background-size: 400% 400%;
-            animation: gradientShift 20s ease infinite;
+            animation: fluidGradient 20s ease infinite;
         }
 
-        .bg-mesh-overlay {
+        .bg-overlay {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-image: 
-                radial-gradient(circle at top left, rgba(255,255,255,0.1) 0%, transparent 50%),
-                radial-gradient(circle at bottom right, rgba(0,0,0,0.4) 0%, transparent 50%);
-            mix-blend-mode: overlay;
-        }
-
-        .bg-noise {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            opacity: 0.04;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noiseFilter'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noiseFilter)'/%3E%3C/svg%3E");
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: radial-gradient(circle at center, transparent 0%, #000 120%);
             mix-blend-mode: multiply;
         }
 
-        /* Ambient Blobs for Liquid Feel */
-        .blob {
+        .fluid-blob {
             position: absolute;
-            filter: blur(80px);
+            filter: blur(90px);
             opacity: 0.6;
             border-radius: 50%;
-            animation: blobFloat 15s ease-in-out infinite alternate;
-            will-change: transform;
+            animation: blobDrift 15s ease-in-out infinite alternate;
         }
 
-        .blob-1 {
-            top: -10%;
-            left: -10%;
-            width: 50vw;
-            height: 50vw;
-            background: var(--color-cyan);
-            animation-delay: 0s;
+        .blob-a {
+            top: -15%; left: -10%; width: 60vw; height: 60vw;
+            background: var(--fluid-4);
         }
-
-        .blob-2 {
-            bottom: -20%;
-            right: -10%;
-            width: 60vw;
-            height: 60vw;
-            background: var(--color-purple);
+        .blob-b {
+            bottom: -20%; right: -15%; width: 70vw; height: 70vw;
+            background: var(--fluid-6);
             animation-delay: -5s;
         }
-
-        .blob-3 {
-            top: 40%;
-            left: 30%;
-            width: 40vw;
-            height: 40vw;
-            background: var(--color-red);
+        .blob-c {
+            top: 30%; left: 40%; width: 50vw; height: 50vw;
+            background: var(--fluid-1);
             animation-delay: -10s;
         }
 
-        /* Canvas for interactive fluid/particles */
         #fluidCanvas {
             position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+            top: 0; left: 0; width: 100%; height: 100%;
             z-index: 1;
             mix-blend-mode: screen;
-            opacity: 0.5;
-        }
-
-        /* ==========================================================================================
-           4. CUSTOM CURSOR
-           ========================================================================================== */
-        .cursor-dot, .cursor-outline {
-            position: fixed;
-            top: 0;
-            left: 0;
-            transform: translate(-50%, -50%);
-            border-radius: 50%;
-            z-index: 9999;
+            opacity: 0.4;
             pointer-events: none;
-            transition: opacity 0.3s ease;
-        }
-
-        .cursor-dot {
-            width: 8px;
-            height: 8px;
-            background-color: white;
-            box-shadow: 0 0 10px rgba(255, 255, 255, 0.8);
-        }
-
-        .cursor-outline {
-            width: 40px;
-            height: 40px;
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            background: rgba(255, 255, 255, 0.05);
-            backdrop-filter: blur(2px);
-            -webkit-backdrop-filter: blur(2px);
-            transition: width 0.2s var(--ease-out-expo), height 0.2s var(--ease-out-expo), background 0.2s;
-        }
-
-        .cursor-hover .cursor-outline {
-            width: 60px;
-            height: 60px;
-            background: rgba(255, 255, 255, 0.1);
-            border-color: rgba(255, 255, 255, 0.8);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-        }
-
-        .cursor-clicking .cursor-outline {
-            width: 30px;
-            height: 30px;
-            background: rgba(255, 255, 255, 0.3);
         }
 
         /* ==========================================================================================
-           5. LAYOUT & TYPOGRAPHY (LIQUID IOS STYLE)
+           4. LAYOUT & HEADER
            ========================================================================================== */
         .app-wrapper {
             position: relative;
@@ -269,633 +145,477 @@
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 20px;
+            padding: 60px 20px;
         }
 
-        .header-container {
-            width: 100%;
-            max-width: 1400px;
+        .header-panel {
+            padding: 25px 60px;
+            background: var(--glass-gradient);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            border: 1px solid var(--glass-border-light);
+            border-top: 1px solid var(--glass-border-highlight);
+            border-left: 1px solid var(--glass-border-highlight);
+            border-radius: 100px;
+            box-shadow: var(--shadow-glass);
             text-align: center;
-            margin-bottom: 60px;
-            position: relative;
-        }
-
-        .header-glass-panel {
-            display: inline-block;
-            padding: 20px 60px;
-            background: var(--glass-bg-light);
-            backdrop-filter: blur(var(--glass-blur-lg));
-            -webkit-backdrop-filter: blur(var(--glass-blur-lg));
-            border: 1px solid var(--glass-border-medium);
-            border-radius: var(--border-radius-pill);
-            box-shadow: var(--shadow-lg);
+            margin-bottom: 70px;
             position: relative;
             overflow: hidden;
         }
 
-        .header-glass-panel::before {
+        .header-panel::before {
             content: '';
             position: absolute;
-            top: 0; left: 0; width: 100%; height: 50%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.2), transparent);
+            top: 0; left: 0; right: 0; height: 40%;
+            background: linear-gradient(180deg, rgba(255,255,255,0.15) 0%, transparent 100%);
+            border-radius: 100px 100px 0 0;
             pointer-events: none;
         }
 
         .main-title {
             font-size: 3.5rem;
             font-weight: 800;
-            letter-spacing: -1px;
             text-transform: uppercase;
-            background: linear-gradient(135deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
+            letter-spacing: -1px;
+            background: linear-gradient(180deg, #ffffff 0%, rgba(255,255,255,0.6) 100%);
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
-            text-shadow: 0 10px 30px rgba(0,0,0,0.3);
             margin-bottom: 5px;
         }
 
         .sub-title {
-            font-size: 1rem;
+            font-size: 1.1rem;
             font-weight: 500;
-            letter-spacing: 5px;
+            letter-spacing: 6px;
             text-transform: uppercase;
-            color: var(--text-color-secondary);
+            color: var(--text-secondary);
         }
 
         /* ==========================================================================================
-           6. 3D GLASS GRID ARCHITECTURE
+           5. LIQUID GLASS GRID
            ========================================================================================== */
         .vault-grid {
             width: 100%;
-            max-width: 1600px;
+            max-width: 1400px;
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
             gap: 40px;
             padding: 20px;
-            perspective: 2000px;
-            transform-style: preserve-3d;
         }
 
-        /* Card Wrapper for 3D Math */
-        .card-3d-wrapper {
-            position: relative;
-            width: 100%;
-            height: var(--card-height);
-            transform-style: preserve-3d;
-            perspective: 1000px;
-        }
-
-        /* The Liquid Glass Card */
         .glass-card {
-            position: absolute;
-            top: 0; left: 0;
-            width: 100%;
-            height: 100%;
-            background: var(--glass-bg-medium);
-            backdrop-filter: blur(var(--glass-blur-lg));
-            -webkit-backdrop-filter: blur(var(--glass-blur-lg));
-            border: 1px solid var(--glass-border-medium);
-            border-radius: var(--border-radius-md);
-            box-shadow: var(--shadow-md);
+            position: relative;
+            height: 220px;
+            background: var(--glass-gradient);
+            backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+            border: 1px solid var(--glass-border-light);
+            border-top: 1px solid var(--glass-border-highlight);
+            border-left: 1px solid var(--glass-border-highlight);
+            border-radius: 30px;
+            box-shadow: var(--shadow-glass), var(--inner-glow);
             display: flex;
+            flex-direction: column;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
+            cursor: pointer; /* Regular cursor restored */
+            transition: all 0.5s var(--ease-spring);
             overflow: hidden;
-            transition: box-shadow 0.3s var(--ease-out-expo), border-color 0.3s var(--ease-out-expo);
-            will-change: transform;
-            cursor: none; /* Relies on custom cursor */
+            text-decoration: none;
         }
 
-        /* Inner Content translating forward in Z-space */
+        /* Thick glass edge highlight */
+        .glass-card::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            border-radius: 30px;
+            border: 2px solid transparent;
+            background: linear-gradient(135deg, rgba(255,255,255,0.3), transparent 50%) border-box;
+            -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0);
+            -webkit-mask-composite: destination-out;
+            mask-composite: exclude;
+            pointer-events: none;
+            transition: all 0.5s ease;
+        }
+
+        /* Hover Physics */
+        .glass-card:hover {
+            transform: translateY(-12px) scale(1.02);
+            background: var(--glass-gradient-hover);
+            box-shadow: var(--shadow-glass-hover);
+            border-color: rgba(255,255,255,0.3);
+        }
+
+        .glass-card:hover::after {
+            background: linear-gradient(135deg, rgba(255,255,255,0.8), rgba(255,255,255,0.1) 50%) border-box;
+        }
+
         .card-content {
-            transform: translateZ(60px);
-            z-index: 10;
             display: flex;
             flex-direction: column;
             align-items: center;
             gap: 20px;
-            pointer-events: none;
-            width: 100%;
-            padding: 20px;
-        }
-
-        /* Holographic Glare Layer */
-        .card-glare {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 60%);
-            opacity: 0;
-            pointer-events: none;
-            transform: translateZ(1px);
-            transition: opacity 0.3s ease;
-            mix-blend-mode: overlay;
-            z-index: 5;
-        }
-
-        /* iOS Inner Top Highlight */
-        .glass-card::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 40%;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.3) 0%, rgba(255,255,255,0) 100%);
-            border-radius: var(--border-radius-md) var(--border-radius-md) 0 0;
-            pointer-events: none;
             z-index: 2;
+            pointer-events: none; /* Let card handle clicks completely */
         }
 
-        /* Hover States */
-        .card-3d-wrapper:hover .glass-card {
-            border-color: var(--glass-border-glow);
-            box-shadow: var(--shadow-xl), var(--shadow-glow);
-        }
-
-        .card-3d-wrapper:hover .card-glare {
-            opacity: 1;
-        }
-
-        .card-3d-wrapper:hover .play-btn-glass {
-            transform: scale(1.1) translateZ(80px);
-            background: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.3), 0 0 30px rgba(255,255,255,0.6);
-        }
-
-        .card-3d-wrapper:hover .play-btn-glass svg {
-            fill: #000;
-        }
-
-        /* Play Button Icon */
-        .play-btn-glass {
-            width: 64px;
-            height: 64px;
+        .play-icon-wrapper {
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
-            background: var(--glass-bg-heavy);
-            backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
-            border: 1px solid var(--glass-border-heavy);
+            background: rgba(255, 255, 255, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.4);
             display: flex;
             align-items: center;
             justify-content: center;
-            transition: var(--transition-spring);
-            box-shadow: var(--shadow-sm);
+            transition: all 0.4s var(--ease-spring);
+            box-shadow: 0 8px 20px rgba(0,0,0,0.2);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
         }
 
-        .play-btn-glass svg {
-            width: 24px;
-            height: 24px;
-            fill: var(--text-color-primary);
+        .glass-card:hover .play-icon-wrapper {
+            background: #ffffff;
+            transform: scale(1.15);
+            box-shadow: 0 10px 30px rgba(255,255,255,0.4);
+            border-color: #fff;
+        }
+
+        .play-icon-wrapper svg {
+            width: 28px;
+            height: 28px;
+            fill: #ffffff;
             margin-left: 4px;
             transition: fill 0.3s ease;
         }
 
-        .card-title-text {
-            font-size: 1.4rem;
+        .glass-card:hover .play-icon-wrapper svg {
+            fill: #000000;
+        }
+
+        .card-title {
+            font-size: 1.3rem;
             font-weight: 700;
             text-align: center;
             text-transform: uppercase;
             letter-spacing: 1px;
-            color: var(--text-color-primary);
-            text-shadow: 0 2px 10px rgba(0,0,0,0.5);
-            background: linear-gradient(to right, #fff, rgba(255,255,255,0.7));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
+            color: #ffffff;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.4);
         }
 
         /* ==========================================================================================
-           7. MODAL OVERLAY & VIDEO PLAYER CONTAINER
+           6. CINEMATIC VIDEO PLAYER (LIQUID MODAL)
            ========================================================================================== */
-        .video-modal-overlay {
+        .video-modal {
             position: fixed;
             top: 0; left: 0; width: 100vw; height: 100vh;
-            background: rgba(0, 0, 0, 0.4);
-            backdrop-filter: blur(30px) saturate(150%);
-            -webkit-backdrop-filter: blur(30px) saturate(150%);
+            background: rgba(0, 0, 0, 0.6);
+            backdrop-filter: blur(20px) saturate(150%);
+            -webkit-backdrop-filter: blur(20px) saturate(150%);
             z-index: 5000;
             display: flex;
             align-items: center;
             justify-content: center;
             opacity: 0;
             visibility: hidden;
-            transition: opacity 0.5s var(--ease-liquid), visibility 0.5s;
-            padding: 40px; /* Keeps video smaller, shows background edges */
+            transition: opacity 0.4s var(--ease-liquid), visibility 0.4s;
+            padding: 40px;
         }
 
-        .video-modal-overlay.is-active {
+        .video-modal.active {
             opacity: 1;
             visibility: visible;
         }
 
-        /* Main Liquid Player Wrapper */
-        .liquid-player-wrapper {
+        .player-container {
             position: relative;
             width: 100%;
-            max-width: 1200px; /* Max size of video */
-            aspect-ratio: 16 / 9;
-            background: rgba(0, 0, 0, 0.8);
-            border-radius: var(--border-radius-lg);
-            box-shadow: 0 40px 100px rgba(0,0,0,0.8), 0 0 60px rgba(255,255,255,0.1);
-            border: 1px solid var(--glass-border-heavy);
-            transform: scale(0.9) translateY(40px);
+            max-width: 1100px;
+            background: #000;
+            border-radius: 24px;
+            box-shadow: 0 30px 80px rgba(0,0,0,0.8), 0 0 40px rgba(255,255,255,0.1);
+            border: 1px solid rgba(255, 255, 255, 0.2);
+            transform: scale(0.95) translateY(20px);
             opacity: 0;
-            transition: transform 0.6s var(--ease-spring), opacity 0.6s var(--ease-liquid);
+            transition: all 0.5s var(--ease-spring);
             overflow: hidden;
+            aspect-ratio: 16/9;
         }
 
-        .video-modal-overlay.is-active .liquid-player-wrapper {
+        .video-modal.active .player-container {
             transform: scale(1) translateY(0);
             opacity: 1;
         }
 
-        /* The actual video element */
-        .main-video-element {
+        .main-video {
             width: 100%;
             height: 100%;
-            object-fit: cover;
+            object-fit: contain;
+            background: #000;
             display: block;
-            border-radius: var(--border-radius-lg);
         }
 
-        /* Top Bar - Close Button & Title */
-        .player-top-bar {
+        /* Top Bar & Close Button */
+        .top-bar {
             position: absolute;
             top: 0; left: 0; right: 0;
-            height: 80px;
-            background: linear-gradient(to bottom, rgba(0,0,0,0.8) 0%, transparent 100%);
+            height: 90px;
+            background: linear-gradient(to bottom, rgba(0,0,0,0.9), transparent);
             display: flex;
             align-items: center;
             justify-content: space-between;
             padding: 0 30px;
             z-index: 100;
             opacity: 0;
-            transform: translateY(-20px);
-            transition: opacity 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
+            transition: opacity 0.3s ease;
         }
 
-        .liquid-player-wrapper:hover .player-top-bar,
-        .liquid-player-wrapper.is-paused .player-top-bar,
-        .liquid-player-wrapper.control-active .player-top-bar {
+        .player-container:hover .top-bar,
+        .player-container.paused .top-bar,
+        .player-container.active-ui .top-bar {
             opacity: 1;
-            transform: translateY(0);
         }
 
-        .player-title {
+        .video-title {
             color: #fff;
             font-size: 1.2rem;
             font-weight: 600;
             letter-spacing: 2px;
             text-transform: uppercase;
-            text-shadow: 0 2px 10px rgba(0,0,0,0.8);
         }
 
-        /* The X Button */
-        .close-btn-glass {
-            width: 44px;
-            height: 44px;
+        .close-btn {
+            width: 44px; height: 44px;
             border-radius: 50%;
             background: rgba(255, 255, 255, 0.1);
             backdrop-filter: blur(10px);
-            -webkit-backdrop-filter: blur(10px);
             border: 1px solid rgba(255,255,255,0.3);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            color: white;
+            color: #fff;
             font-size: 20px;
-            cursor: none; /* Custom cursor handles interaction */
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; /* Regular cursor */
             transition: all 0.3s var(--ease-spring);
         }
 
-        .close-btn-glass:hover {
+        .close-btn:hover {
             background: rgba(255, 50, 50, 0.8);
-            border-color: rgba(255, 100, 100, 1);
+            border-color: #ff3232;
             transform: rotate(90deg) scale(1.1);
-            box-shadow: 0 0 20px rgba(255, 50, 50, 0.6);
+            box-shadow: 0 0 20px rgba(255,50,50,0.6);
         }
 
-        /* ==========================================================================================
-           8. LIQUID VIDEO CONTROLS BOTTOM BAR
-           ========================================================================================== */
-        .player-controls-container {
+        /* Bottom Controls */
+        .controls-bar {
             position: absolute;
-            bottom: 20px;
-            left: 20px;
-            right: 20px;
-            background: var(--glass-bg-medium);
-            backdrop-filter: blur(25px);
-            -webkit-backdrop-filter: blur(25px);
-            border: 1px solid var(--glass-border-medium);
-            border-radius: var(--border-radius-md);
+            bottom: 20px; left: 20px; right: 20px;
+            background: var(--glass-gradient);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border-highlight);
+            border-radius: 20px;
             padding: 15px 25px;
             display: flex;
             flex-direction: column;
             gap: 15px;
             z-index: 100;
             opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.4s var(--ease-out-expo), transform 0.4s var(--ease-out-expo);
+            transform: translateY(20px);
+            transition: all 0.3s ease;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.5);
         }
 
-        .liquid-player-wrapper:hover .player-controls-container,
-        .liquid-player-wrapper.is-paused .player-controls-container,
-        .liquid-player-wrapper.control-active .player-controls-container {
+        .player-container:hover .controls-bar,
+        .player-container.paused .controls-bar,
+        .player-container.active-ui .controls-bar {
             opacity: 1;
             transform: translateY(0);
         }
 
-        /* Scrubber / Progress Bar */
-        .progress-bar-wrapper {
+        /* Progress Line */
+        .progress-area {
             width: 100%;
-            height: 10px;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 5px;
-            cursor: none;
+            height: 8px;
+            background: rgba(255,255,255,0.15);
+            border-radius: 4px;
+            cursor: pointer; /* Regular cursor */
             position: relative;
-            overflow: visible; /* To allow glow */
         }
 
-        .progress-bar-fill {
+        .progress-fill {
             height: 100%;
             background: #fff;
-            border-radius: 5px;
+            border-radius: 4px;
             width: 0%;
             position: relative;
-            box-shadow: 0 0 15px rgba(255, 255, 255, 0.8);
-            transition: width 0.1s linear;
+            box-shadow: 0 0 10px #fff;
         }
 
-        .progress-bar-fill::after {
+        .progress-fill::after {
             content: '';
             position: absolute;
-            right: -8px;
-            top: 50%;
+            right: -6px; top: 50%;
             transform: translateY(-50%) scale(0);
-            width: 16px;
-            height: 16px;
+            width: 14px; height: 14px;
             background: #fff;
             border-radius: 50%;
-            box-shadow: 0 0 10px rgba(0,0,0,0.5);
-            transition: transform 0.2s var(--ease-out-expo);
+            transition: transform 0.2s;
+            box-shadow: 0 0 8px rgba(0,0,0,0.5);
         }
 
-        .progress-bar-wrapper:hover .progress-bar-fill::after {
+        .progress-area:hover .progress-fill::after {
             transform: translateY(-50%) scale(1);
         }
 
-        .progress-hover-tooltip {
-            position: absolute;
-            bottom: 20px;
-            transform: translateX(-50%);
-            background: rgba(0,0,0,0.8);
-            color: #fff;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 0.8rem;
-            font-family: monospace;
-            opacity: 0;
-            pointer-events: none;
-            transition: opacity 0.2s;
-        }
-
-        .progress-bar-wrapper:hover .progress-hover-tooltip {
-            opacity: 1;
-        }
-
         /* Buttons Row */
-        .controls-row-bottom {
+        .controls-row {
             display: flex;
-            align-items: center;
             justify-content: space-between;
+            align-items: center;
         }
 
-        .controls-left, .controls-right {
+        .controls-group {
             display: flex;
             align-items: center;
             gap: 20px;
         }
 
-        /* Interactive Control Buttons */
-        .ctrl-btn {
-            background: transparent;
-            border: none;
-            outline: none;
-            color: #fff;
-            width: 40px;
-            height: 40px;
+        .icon-btn {
+            background: none; border: none; color: #fff;
+            width: 36px; height: 36px;
             border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: none;
-            transition: var(--transition-fast);
-            position: relative;
-            overflow: hidden;
+            display: flex; align-items: center; justify-content: center;
+            cursor: pointer; /* Regular cursor */
+            transition: all 0.2s;
         }
 
-        .ctrl-btn::before {
-            content: '';
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 50%;
-            transform: scale(0);
-            transition: transform 0.3s var(--ease-spring);
+        .icon-btn:hover {
+            background: rgba(255,255,255,0.15);
+            transform: scale(1.1);
         }
 
-        .ctrl-btn:hover::before {
-            transform: scale(1);
+        .icon-btn svg {
+            width: 22px; height: 22px; fill: currentColor;
         }
 
-        .ctrl-btn:hover {
-            box-shadow: 0 0 15px rgba(255,255,255,0.3);
+        /* Volume Slider */
+        .vol-wrapper {
+            display: flex; align-items: center; gap: 10px;
         }
 
-        .ctrl-btn svg {
-            width: 22px;
-            height: 22px;
-            fill: currentColor;
-            z-index: 2;
-            transition: transform 0.2s;
-        }
-
-        .ctrl-btn:active svg {
-            transform: scale(0.8);
-        }
-
-        /* Volume Controls */
-        .volume-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            width: 140px;
-        }
-
-        .volume-slider {
+        .vol-slider {
             -webkit-appearance: none;
-            width: 100%;
-            height: 6px;
+            width: 90px; height: 5px;
             background: rgba(255,255,255,0.2);
-            border-radius: 3px;
-            outline: none;
+            border-radius: 3px; outline: none;
+            cursor: pointer;
         }
 
-        .volume-slider::-webkit-slider-thumb {
+        .vol-slider::-webkit-slider-thumb {
             -webkit-appearance: none;
-            appearance: none;
-            width: 14px;
-            height: 14px;
-            border-radius: 50%;
-            background: #fff;
-            cursor: none;
-            box-shadow: 0 0 10px rgba(255,255,255,0.8);
-            transition: transform 0.2s;
+            width: 12px; height: 12px;
+            background: #fff; border-radius: 50%;
+            box-shadow: 0 0 5px #fff;
+            transition: 0.2s;
         }
 
-        .volume-slider::-webkit-slider-thumb:hover {
+        .vol-slider::-webkit-slider-thumb:hover {
             transform: scale(1.3);
         }
 
-        /* Time Display */
-        .time-display {
-            font-family: monospace;
-            font-size: 0.95rem;
-            color: rgba(255,255,255,0.9);
-            letter-spacing: 1px;
-            text-shadow: 0 1px 5px rgba(0,0,0,0.5);
+        .time-text {
+            font-family: monospace; font-size: 0.95rem;
+            opacity: 0.9; text-shadow: 0 1px 3px rgba(0,0,0,0.5);
         }
 
-        /* Hidden Utility */
-        .hidden { display: none !important; }
+        .hide { display: none !important; }
 
         /* ==========================================================================================
-           9. ANIMATION KEYFRAMES
+           7. ANIMATIONS & RESPONSIVE
            ========================================================================================== */
-        @keyframes gradientShift {
+        @keyframes fluidGradient {
             0% { background-position: 0% 50%; }
             50% { background-position: 100% 50%; }
             100% { background-position: 0% 50%; }
         }
 
-        @keyframes blobFloat {
+        @keyframes blobDrift {
             0% { transform: translate(0, 0) scale(1); }
             33% { transform: translate(5%, -5%) scale(1.05); }
-            66% { transform: translate(-2%, 8%) scale(0.95); }
+            66% { transform: translate(-3%, 8%) scale(0.95); }
             100% { transform: translate(0, 0) scale(1); }
         }
 
-        @keyframes pulseGlow {
-            0% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-            50% { box-shadow: 0 0 40px rgba(255,255,255,0.6); }
-            100% { box-shadow: 0 0 20px rgba(255,255,255,0.2); }
-        }
-
-        @keyframes rippleEffect {
-            0% { transform: scale(0); opacity: 0.8; }
-            100% { transform: scale(4); opacity: 0; }
-        }
-
-        .ripple-span {
-            position: absolute;
-            border-radius: 50%;
-            background: rgba(255,255,255,0.4);
-            transform: scale(0);
-            animation: rippleEffect 0.6s linear;
-            pointer-events: none;
-        }
-
-        /* ==========================================================================================
-           10. MEDIA QUERIES FOR RESPONSIVENESS
-           ========================================================================================== */
-        @media (max-width: 1024px) {
-            .main-title { font-size: 2.8rem; }
-            .vault-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
-            .player-controls-container { bottom: 10px; left: 10px; right: 10px; }
-            .video-modal-overlay { padding: 20px; }
-        }
-
-        @media (max-width: 768px) {
-            body { cursor: auto; } /* Disable custom cursor on mobile */
-            .cursor-dot, .cursor-outline { display: none !important; }
-            .main-title { font-size: 2rem; }
-            .sub-title { letter-spacing: 2px; }
-            .header-glass-panel { padding: 15px 30px; }
-            .vault-grid { grid-template-columns: repeat(auto-fill, minmax(100%, 1fr)); padding: 10px; }
-            .volume-container { display: none; } /* Hide volume on mobile to save space */
-            .video-modal-overlay { padding: 0; }
-            .liquid-player-wrapper { border-radius: 0; border: none; }
-            .player-controls-container { border-radius: 0; border-left: none; border-right: none; bottom: 0; }
+        @media (max-width: 900px) {
+            .main-title { font-size: 2.5rem; }
+            .header-panel { padding: 20px 40px; margin-bottom: 40px; }
+            .video-modal { padding: 15px; }
+            .controls-bar { bottom: 10px; left: 10px; right: 10px; padding: 10px 15px; }
+            .vol-wrapper { display: none; } /* Simplify UI on small screens */
         }
     </style>
 </head>
 <body>
 
     <div class="bg-container">
-        <div class="bg-mesh-overlay"></div>
-        <div class="bg-noise"></div>
-        <div class="blob blob-1"></div>
-        <div class="blob blob-2"></div>
-        <div class="blob blob-3"></div>
+        <div class="bg-overlay"></div>
+        <div class="fluid-blob blob-a"></div>
+        <div class="fluid-blob blob-b"></div>
+        <div class="fluid-blob blob-c"></div>
     </div>
 
     <canvas id="fluidCanvas"></canvas>
 
-    <div class="cursor-dot" id="cursorDot"></div>
-    <div class="cursor-outline" id="cursorOutline"></div>
-
     <div class="app-wrapper">
-        
-        <header class="header-container">
-            <div class="header-glass-panel">
-                <h1 class="main-title">Premium Ad Vault</h1>
-                <p class="sub-title">Liquid Glass iOS Edition</p>
-            </div>
+        <header class="header-panel">
+            <h1 class="main-title">Premium Ad Vault</h1>
+            <p class="sub-title">Liquid Glass Edition</p>
         </header>
 
-        <main class="vault-grid" id="vaultGrid">
+        <main class="vault-grid" id="gridContainer">
             </main>
-
     </div>
 
-    <div class="video-modal-overlay" id="videoModal">
-        <div class="liquid-player-wrapper" id="playerWrapper">
+    <div class="video-modal" id="modalOverlay">
+        <div class="player-container" id="vidContainer">
             
-            <div class="player-top-bar">
-                <div class="player-title" id="playerTitleText">Commercial</div>
-                <button class="close-btn-glass" id="closeModalBtn" title="Close Video (Esc)">✕</button>
+            <div class="top-bar">
+                <div class="video-title" id="vidTitle">Loading...</div>
+                <button class="close-btn" id="closeBtn">✕</button>
             </div>
 
-            <video class="main-video-element" id="mainVideoEl" preload="metadata"></video>
+            <video class="main-video" id="vidElement" preload="metadata"></video>
 
-            <div class="player-controls-container" id="playerControlsBox">
-                
-                <div class="progress-bar-wrapper" id="progressWrapper">
-                    <div class="progress-bar-fill" id="progressFill"></div>
-                    <div class="progress-hover-tooltip" id="progressTooltip">0:00</div>
+            <div class="controls-bar" id="vidControls">
+                <div class="progress-area" id="progArea">
+                    <div class="progress-fill" id="progFill"></div>
                 </div>
 
-                <div class="controls-row-bottom">
-                    
-                    <div class="controls-left">
-                        <button class="ctrl-btn" id="playPauseBtn" title="Play/Pause (Space)">
-                            <svg id="iconPlay" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
-                            <svg id="iconPause" class="hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                <div class="controls-row">
+                    <div class="controls-group">
+                        <button class="icon-btn" id="playBtn">
+                            <svg id="i-play" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <svg id="i-pause" class="hide" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
                         </button>
-
-                        <div class="volume-container">
-                            <button class="ctrl-btn" id="muteBtn" title="Mute (M)">
-                                <svg id="iconVolHigh" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
-                                <svg id="iconVolMute" class="hidden" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
+                        
+                        <div class="vol-wrapper">
+                            <button class="icon-btn" id="muteBtn">
+                                <svg id="i-vol" viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                                <svg id="i-mute" class="hide" viewBox="0 0 24 24"><path d="M16.5 12c0-1.77-1.02-3.29-2.5-4.03v2.21l2.45 2.45c.03-.2.05-.41.05-.63zm2.5 0c0 .94-.2 1.82-.54 2.64l1.51 1.51C20.63 14.91 21 13.5 21 12c0-4.28-2.99-7.86-7-8.77v2.06c2.89.86 5 3.54 5 6.71zM4.27 3L3 4.27 7.73 9H3v6h4l5 5v-6.73l4.25 4.25c-.67.52-1.42.93-2.25 1.18v2.06c1.38-.31 2.63-.95 3.69-1.81L19.73 21 21 19.73l-9-9L4.27 3zM12 4L9.91 6.09 12 8.18V4z"/></svg>
                             </button>
-                            <input type="range" class="volume-slider" id="volumeSlider" min="0" max="1" step="0.01" value="0.5">
+                            <input type="range" class="vol-slider" id="volSlider" min="0" max="1" step="0.01" value="0.5">
                         </div>
 
-                        <div class="time-display">
-                            <span id="timeCurrent">0:00</span> / <span id="timeDuration">0:00</span>
+                        <div class="time-text">
+                            <span id="t-curr">0:00</span> / <span id="t-dur">0:00</span>
                         </div>
                     </div>
 
-                    <div class="controls-right">
-                        <button class="ctrl-btn" id="fullscreenBtn" title="Fullscreen (F)">
-                            <svg id="iconEnterFS" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
-                            <svg id="iconExitFS" class="hidden" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
+                    <div class="controls-group">
+                        <button class="icon-btn" id="fullBtn">
+                            <svg id="i-full" viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                            <svg id="i-exit" class="hide" viewBox="0 0 24 24"><path d="M5 16h3v3h2v-5H5v2zm3-8H5v2h5V5H8v3zm6 11h2v-3h3v-2h-5v5zm2-11V5h-2v5h5V8h-3z"/></svg>
                         </button>
                     </div>
                 </div>
@@ -904,10 +624,10 @@
     </div>
 
     <script>
-        // -------------------------------------------------------------------------
-        // 1. DATA CONFIGURATION (Easy to add another commercial)
-        // -------------------------------------------------------------------------
-        const commercialData = [
+        /* ==========================================================================================
+           1. DATA CONFIGURATION
+           ========================================================================================== */
+        const ads = [
             { src: 'Funny.mp4', title: "McDonald's" },
             { src: 'commercial.mp4', title: "McDonald's #2" },
             { src: 'mp4.mp4', title: "McDonald's #3" },
@@ -927,481 +647,279 @@
             { src: 'amex.mp4', title: "American Express" },
             { src: 'macbook.mp4', title: "Macbook" },
             { src: 'allstate.mp4', title: "AllState" }
-            // To add another: { src: 'new_video.mp4', title: 'Brand Name' }
         ];
 
-        // -------------------------------------------------------------------------
-        // 2. DOM CACHING & INITIALIZATION
-        // -------------------------------------------------------------------------
-        const vaultGrid = document.getElementById('vaultGrid');
+        /* ==========================================================================================
+           2. DOM ELEMENTS
+           ========================================================================================== */
+        const grid = document.getElementById('gridContainer');
         
-        // Video Modal Elements
-        const videoModal = document.getElementById('videoModal');
-        const playerWrapper = document.getElementById('playerWrapper');
-        const mainVideo = document.getElementById('mainVideoEl');
-        const closeModalBtn = document.getElementById('closeModalBtn');
-        const playerTitleText = document.getElementById('playerTitleText');
+        // Modal & Player
+        const modal = document.getElementById('modalOverlay');
+        const vidCont = document.getElementById('vidContainer');
+        const video = document.getElementById('vidElement');
+        const closeBtn = document.getElementById('closeBtn');
+        const titleEl = document.getElementById('vidTitle');
         
-        // Custom Controls Elements
-        const playPauseBtn = document.getElementById('playPauseBtn');
-        const iconPlay = document.getElementById('iconPlay');
-        const iconPause = document.getElementById('iconPause');
+        // Controls
+        const playBtn = document.getElementById('playBtn');
+        const iPlay = document.getElementById('i-play');
+        const iPause = document.getElementById('i-pause');
         
         const muteBtn = document.getElementById('muteBtn');
-        const iconVolHigh = document.getElementById('iconVolHigh');
-        const iconVolMute = document.getElementById('iconVolMute');
-        const volumeSlider = document.getElementById('volumeSlider');
+        const iVol = document.getElementById('i-vol');
+        const iMute = document.getElementById('i-mute');
+        const volSlider = document.getElementById('volSlider');
         
-        const progressWrapper = document.getElementById('progressWrapper');
-        const progressFill = document.getElementById('progressFill');
-        const progressTooltip = document.getElementById('progressTooltip');
+        const progArea = document.getElementById('progArea');
+        const progFill = document.getElementById('progFill');
         
-        const timeCurrent = document.getElementById('timeCurrent');
-        const timeDuration = document.getElementById('timeDuration');
+        const tCurr = document.getElementById('t-curr');
+        const tDur = document.getElementById('t-dur');
         
-        const fullscreenBtn = document.getElementById('fullscreenBtn');
-        const iconEnterFS = document.getElementById('iconEnterFS');
-        const iconExitFS = document.getElementById('iconExitFS');
+        const fullBtn = document.getElementById('fullBtn');
+        const iFull = document.getElementById('i-full');
+        const iExit = document.getElementById('i-exit');
 
-        // SVG string for Card Play Icon
-        const svgPlayIcon = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+        const playSvg = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
 
-        // -------------------------------------------------------------------------
-        // 3. BUILD DOM GRID
-        // -------------------------------------------------------------------------
-        function buildGrid() {
-            commercialData.forEach((item, index) => {
-                const wrapper = document.createElement('div');
-                wrapper.className = 'card-3d-wrapper';
-                
-                wrapper.innerHTML = `
-                    <div class="glass-card" data-index="${index}" data-src="${item.src}">
-                        <div class="card-glare"></div>
-                        <div class="card-content">
-                            <div class="play-btn-glass interactable">${svgPlayIcon}</div>
-                            <div class="card-title-text">${item.title}</div>
-                        </div>
+        /* ==========================================================================================
+           3. RENDER CARDS & BIND CLICKS
+           ========================================================================================== */
+        function initGrid() {
+            ads.forEach((ad) => {
+                const card = document.createElement('div');
+                card.className = 'glass-card';
+                card.innerHTML = `
+                    <div class="card-content">
+                        <div class="play-icon-wrapper">${playSvg}</div>
+                        <div class="card-title">${ad.title}</div>
                     </div>
                 `;
-                vaultGrid.appendChild(wrapper);
-            });
-            
-            init3DCardEffects();
-        }
-
-        // -------------------------------------------------------------------------
-        // 4. 3D TILT EFFECT LOGIC (LIQUID GLASS PHYSICS)
-        // -------------------------------------------------------------------------
-        function init3DCardEffects() {
-            const cards = document.querySelectorAll('.card-3d-wrapper');
-            
-            cards.forEach(wrapper => {
-                const innerCard = wrapper.querySelector('.glass-card');
-                const glare = wrapper.querySelector('.card-glare');
                 
-                wrapper.addEventListener('mousemove', (e) => {
-                    const rect = wrapper.getBoundingClientRect();
-                    const x = e.clientX - rect.left;
-                    const y = e.clientY - rect.top;
-                    
-                    const centerX = rect.width / 2;
-                    const centerY = rect.height / 2;
-                    
-                    // Calculate rotation
-                    const rotateX = ((y - centerY) / centerY) * -15; // Max 15 deg
-                    const rotateY = ((x - centerX) / centerX) * 15;
-                    
-                    innerCard.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
-                    
-                    // Calculate Glare position based on mouse position relative to center
-                    const percentX = (x / rect.width) * 100;
-                    const percentY = (y / rect.height) * 100;
-                    glare.style.background = `radial-gradient(circle at ${percentX}% ${percentY}%, rgba(255,255,255,0.6) 0%, transparent 60%)`;
+                // Directly bind standard click event
+                card.addEventListener('click', () => {
+                    openVideo(ad.src, ad.title);
                 });
                 
-                wrapper.addEventListener('mouseleave', () => {
-                    innerCard.style.transform = `rotateX(0deg) rotateY(0deg)`;
-                    glare.style.background = `radial-gradient(circle at 50% 50%, rgba(255,255,255,0.4) 0%, transparent 60%)`;
-                });
-
-                // Click event to open video
-                innerCard.addEventListener('click', (e) => {
-                    createRipple(e, innerCard);
-                    openVideoModal(innerCard.dataset.src, commercialData[innerCard.dataset.index].title);
-                });
+                grid.appendChild(card);
             });
         }
 
-        // -------------------------------------------------------------------------
-        // 5. CUSTOM CURSOR LOGIC
-        // -------------------------------------------------------------------------
-        const cursorDot = document.getElementById('cursorDot');
-        const cursorOutline = document.getElementById('cursorOutline');
-        let cursorX = window.innerWidth / 2;
-        let cursorY = window.innerHeight / 2;
-        let dotX = cursorX;
-        let dotY = cursorY;
-        let outlineX = cursorX;
-        let outlineY = cursorY;
+        /* ==========================================================================================
+           4. VIDEO PLAYER LOGIC
+           ========================================================================================== */
+        let hideTimer;
 
-        function updateCursorPositions() {
-            // Lerp math for smooth trailing outline
-            dotX += (cursorX - dotX) * 0.5;
-            dotY += (cursorY - dotY) * 0.5;
-            outlineX += (cursorX - outlineX) * 0.2;
-            outlineY += (cursorY - outlineY) * 0.2;
-
-            cursorDot.style.transform = `translate(${dotX}px, ${dotY}px) translate(-50%, -50%)`;
-            cursorOutline.style.transform = `translate(${outlineX}px, ${outlineY}px) translate(-50%, -50%)`;
-
-            requestAnimationFrame(updateCursorPositions);
+        function openVideo(src, title) {
+            video.src = src;
+            titleEl.textContent = title;
+            modal.classList.add('active');
+            
+            video.volume = volSlider.value;
+            video.play().catch(err => console.log("Autoplay caught:", err));
+            
+            updatePlayIcon(true);
+            document.body.style.overflow = 'hidden'; // Stop bg scroll
+            resetUI();
         }
 
-        window.addEventListener('mousemove', (e) => {
-            cursorX = e.clientX;
-            cursorY = e.clientY;
-        });
-
-        window.addEventListener('mousedown', () => document.body.classList.add('cursor-clicking'));
-        window.addEventListener('mouseup', () => document.body.classList.remove('cursor-clicking'));
-
-        // Hover states for interactables
-        document.addEventListener('mouseover', (e) => {
-            if (e.target.closest('button') || e.target.closest('.interactable') || e.target.tagName.toLowerCase() === 'input') {
-                document.body.classList.add('cursor-hover');
-            } else {
-                document.body.classList.remove('cursor-hover');
-            }
-        });
-
-        requestAnimationFrame(updateCursorPositions);
-
-        // -------------------------------------------------------------------------
-        // 6. RIPPLE CLICK EFFECT
-        // -------------------------------------------------------------------------
-        function createRipple(event, container) {
-            const circle = document.createElement('span');
-            const diameter = Math.max(container.clientWidth, container.clientHeight);
-            const radius = diameter / 2;
-            
-            const rect = container.getBoundingClientRect();
-            circle.style.width = circle.style.height = `${diameter}px`;
-            circle.style.left = `${event.clientX - rect.left - radius}px`;
-            circle.style.top = `${event.clientY - rect.top - radius}px`;
-            circle.classList.add('ripple-span');
-            
-            container.appendChild(circle);
-            
-            setTimeout(() => {
-                circle.remove();
-            }, 600);
-        }
-
-        // -------------------------------------------------------------------------
-        // 7. CANVAS PARTICLE FLUID BACKGROUND
-        // -------------------------------------------------------------------------
-        const canvas = document.getElementById('fluidCanvas');
-        const ctx = canvas.getContext('2d');
-        let width, height;
-        let particles = [];
-
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-        }
-        window.addEventListener('resize', resizeCanvas);
-        resizeCanvas();
-
-        class Particle {
-            constructor() {
-                this.x = Math.random() * width;
-                this.y = Math.random() * height;
-                this.vx = (Math.random() - 0.5) * 1.5;
-                this.vy = (Math.random() - 0.5) * 1.5;
-                this.radius = Math.random() * 2 + 0.5;
-                this.baseAlpha = Math.random() * 0.5 + 0.1;
-            }
-            update() {
-                this.x += this.vx;
-                this.y += this.vy;
-                
-                // Wrap around edges
-                if (this.x < 0) this.x = width;
-                if (this.x > width) this.x = 0;
-                if (this.y < 0) this.y = height;
-                if (this.y > height) this.y = 0;
-            }
-            draw() {
-                ctx.beginPath();
-                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
-                ctx.fillStyle = `rgba(255, 255, 255, ${this.baseAlpha})`;
-                ctx.fill();
-            }
-        }
-
-        // Initialize particles
-        const numParticles = window.innerWidth < 768 ? 50 : 150;
-        for (let i = 0; i < numParticles; i++) {
-            particles.push(new Particle());
-        }
-
-        function animateCanvas() {
-            ctx.clearRect(0, 0, width, height);
-            
-            for (let i = 0; i < particles.length; i++) {
-                particles[i].update();
-                particles[i].draw();
-                
-                // Draw connecting constellation lines
-                for (let j = i + 1; j < particles.length; j++) {
-                    const dx = particles[i].x - particles[j].x;
-                    const dy = particles[i].y - particles[j].y;
-                    const distance = Math.sqrt(dx * dx + dy * dy);
-                    
-                    if (distance < 100) {
-                        ctx.beginPath();
-                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.15 - (distance / 100) * 0.15})`;
-                        ctx.lineWidth = 0.5;
-                        ctx.moveTo(particles[i].x, particles[i].y);
-                        ctx.lineTo(particles[j].x, particles[j].y);
-                        ctx.stroke();
-                    }
-                }
-            }
-            requestAnimationFrame(animateCanvas);
-        }
-        animateCanvas();
-
-        // -------------------------------------------------------------------------
-        // 8. CUSTOM VIDEO PLAYER CONTROLLER CLASS
-        // -------------------------------------------------------------------------
-        let idleTimer;
-        
-        function openVideoModal(src, title) {
-            mainVideo.src = src;
-            playerTitleText.textContent = title;
-            videoModal.classList.add('is-active');
-            
-            // Set initial volume based on slider
-            mainVideo.volume = volumeSlider.value;
-            
-            // Auto play
-            mainVideo.play().catch(e => console.log("Autoplay prevented:", e));
-            updatePlayPauseIcon(true);
-            
-            resetIdleTimer();
-            document.body.style.overflow = 'hidden'; // Prevent background scroll
-        }
-
-        function closeVideoModal() {
-            videoModal.classList.remove('is-active');
-            mainVideo.pause();
-            
-            // Exit fullscreen if active
+        function closeVideo() {
+            modal.classList.remove('active');
+            video.pause();
             if (document.fullscreenElement) {
-                document.exitFullscreen().catch(err => console.log(err));
+                document.exitFullscreen().catch(e => console.log(e));
             }
-            
             setTimeout(() => {
-                mainVideo.src = '';
-                document.body.style.overflow = ''; // Restore scroll
-            }, 600); // Wait for transition
+                video.src = '';
+                document.body.style.overflow = '';
+            }, 400);
         }
 
-        // --- Core Video Listeners ---
-        mainVideo.addEventListener('timeupdate', updateProgress);
-        mainVideo.addEventListener('loadedmetadata', () => {
-            timeDuration.textContent = formatTime(mainVideo.duration);
-        });
-        mainVideo.addEventListener('play', () => updatePlayPauseIcon(true));
-        mainVideo.addEventListener('pause', () => updatePlayPauseIcon(false));
-        mainVideo.addEventListener('ended', () => {
-            updatePlayPauseIcon(false);
-            playerWrapper.classList.remove('is-paused');
-        });
+        closeBtn.addEventListener('click', closeVideo);
 
-        // --- Play/Pause Logic ---
+        // Core Listeners
+        video.addEventListener('timeupdate', updateProg);
+        video.addEventListener('loadedmetadata', () => { tDur.textContent = formatTime(video.duration); });
+        video.addEventListener('play', () => updatePlayIcon(true));
+        video.addEventListener('pause', () => updatePlayIcon(false));
+        video.addEventListener('ended', () => { updatePlayIcon(false); vidCont.classList.add('paused'); });
+        
+        // Play/Pause
         function togglePlay() {
-            if (mainVideo.paused || mainVideo.ended) {
-                mainVideo.play();
-            } else {
-                mainVideo.pause();
-            }
+            if (video.paused || video.ended) video.play();
+            else video.pause();
         }
         
-        function updatePlayPauseIcon(isPlaying) {
-            if (isPlaying) {
-                iconPlay.classList.add('hidden');
-                iconPause.classList.remove('hidden');
-                playerWrapper.classList.remove('is-paused');
+        function updatePlayIcon(playing) {
+            if (playing) {
+                iPlay.classList.add('hide'); iPause.classList.remove('hide');
+                vidCont.classList.remove('paused');
             } else {
-                iconPause.classList.add('hidden');
-                iconPlay.classList.remove('hidden');
-                playerWrapper.classList.add('is-paused');
+                iPause.classList.add('hide'); iPlay.classList.remove('hide');
+                vidCont.classList.add('paused');
             }
         }
 
-        playPauseBtn.addEventListener('click', togglePlay);
-        mainVideo.addEventListener('click', togglePlay);
+        playBtn.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
 
-        // --- Progress Bar Logic ---
-        let isScrubbing = false;
-
-        function updateProgress() {
-            if (!isScrubbing) {
-                const percent = (mainVideo.currentTime / mainVideo.duration) * 100;
-                progressFill.style.width = `${percent}%`;
-                timeCurrent.textContent = formatTime(mainVideo.currentTime);
+        // Progress
+        let scrubbing = false;
+        function updateProg() {
+            if (!scrubbing && !isNaN(video.duration)) {
+                const pc = (video.currentTime / video.duration) * 100;
+                progFill.style.width = `${pc}%`;
+                tCurr.textContent = formatTime(video.currentTime);
             }
         }
 
-        function handleScrub(e) {
-            const rect = progressWrapper.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            x = Math.max(0, Math.min(x, rect.width));
-            const percent = x / rect.width;
-            
-            progressFill.style.width = `${percent * 100}%`;
-            mainVideo.currentTime = percent * mainVideo.duration;
-            timeCurrent.textContent = formatTime(mainVideo.currentTime);
+        function scrub(e) {
+            const rect = progArea.getBoundingClientRect();
+            let x = Math.max(0, Math.min(e.clientX - rect.left, rect.width));
+            const pc = x / rect.width;
+            progFill.style.width = `${pc * 100}%`;
+            video.currentTime = pc * video.duration;
+            tCurr.textContent = formatTime(video.currentTime);
         }
 
-        progressWrapper.addEventListener('mousedown', (e) => {
-            isScrubbing = true;
-            handleScrub(e);
-        });
+        progArea.addEventListener('mousedown', (e) => { scrubbing = true; scrub(e); });
+        window.addEventListener('mousemove', (e) => { if (scrubbing) scrub(e); });
+        window.addEventListener('mouseup', () => { scrubbing = false; });
 
-        window.addEventListener('mousemove', (e) => {
-            if (isScrubbing) handleScrub(e);
-        });
-
-        window.addEventListener('mouseup', () => {
-            if (isScrubbing) isScrubbing = false;
-        });
-
-        // Tooltip logic
-        progressWrapper.addEventListener('mousemove', (e) => {
-            const rect = progressWrapper.getBoundingClientRect();
-            let x = e.clientX - rect.left;
-            x = Math.max(0, Math.min(x, rect.width));
-            const percent = x / rect.width;
-            
-            progressTooltip.style.left = `${x}px`;
-            if (!isNaN(mainVideo.duration)) {
-                progressTooltip.textContent = formatTime(percent * mainVideo.duration);
-            }
-        });
-
-        // --- Volume Logic ---
+        // Volume
         function toggleMute() {
-            mainVideo.muted = !mainVideo.muted;
-            updateVolumeUI();
+            video.muted = !video.muted;
+            updateVolUI();
         }
-
-        function updateVolumeUI() {
-            if (mainVideo.muted || mainVideo.volume === 0) {
-                iconVolHigh.classList.add('hidden');
-                iconVolMute.classList.remove('hidden');
-                if(mainVideo.muted) volumeSlider.value = 0;
+        
+        function updateVolUI() {
+            if (video.muted || video.volume === 0) {
+                iVol.classList.add('hide'); iMute.classList.remove('hide');
+                if(video.muted) volSlider.value = 0;
             } else {
-                iconVolMute.classList.add('hidden');
-                iconVolHigh.classList.remove('hidden');
-                volumeSlider.value = mainVideo.volume;
+                iMute.classList.add('hide'); iVol.classList.remove('hide');
+                volSlider.value = video.volume;
             }
         }
 
         muteBtn.addEventListener('click', toggleMute);
-        
-        volumeSlider.addEventListener('input', (e) => {
-            const val = parseFloat(e.target.value);
-            mainVideo.volume = val;
-            mainVideo.muted = val === 0;
-            updateVolumeUI();
+        volSlider.addEventListener('input', (e) => {
+            const v = parseFloat(e.target.value);
+            video.volume = v;
+            video.muted = v === 0;
+            updateVolUI();
         });
 
-        // --- Fullscreen Logic ---
-        function toggleFullscreen() {
+        // Fullscreen
+        function toggleFS() {
             if (!document.fullscreenElement) {
-                playerWrapper.requestFullscreen().catch(err => {
-                    console.log(`Error attempting to enable full-screen mode: ${err.message}`);
-                });
+                vidCont.requestFullscreen().catch(e => console.log(e));
             } else {
                 document.exitFullscreen();
             }
         }
-
-        fullscreenBtn.addEventListener('click', toggleFullscreen);
-
+        fullBtn.addEventListener('click', toggleFS);
         document.addEventListener('fullscreenchange', () => {
             if (document.fullscreenElement) {
-                iconEnterFS.classList.add('hidden');
-                iconExitFS.classList.remove('hidden');
+                iFull.classList.add('hide'); iExit.classList.remove('hide');
             } else {
-                iconExitFS.classList.add('hidden');
-                iconEnterFS.classList.remove('hidden');
+                iExit.classList.add('hide'); iFull.classList.remove('hide');
             }
         });
 
-        // --- Time Formatting Utility ---
-        function formatTime(seconds) {
-            if (isNaN(seconds)) return "0:00";
-            const min = Math.floor(seconds / 60);
-            const sec = Math.floor(seconds % 60);
-            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        // Formatting
+        function formatTime(sec) {
+            if (isNaN(sec)) return "0:00";
+            const m = Math.floor(sec / 60);
+            const s = Math.floor(sec % 60);
+            return `${m}:${s < 10 ? '0' : ''}${s}`;
         }
 
-        // --- Idle State Manager (Hide controls when inactive) ---
-        function resetIdleTimer() {
-            playerWrapper.classList.add('control-active');
-            clearTimeout(idleTimer);
-            if (!mainVideo.paused) {
-                idleTimer = setTimeout(() => {
-                    playerWrapper.classList.remove('control-active');
-                }, 3000);
+        // Auto-hide UI
+        function resetUI() {
+            vidCont.classList.add('active-ui');
+            clearTimeout(hideTimer);
+            if (!video.paused) {
+                hideTimer = setTimeout(() => vidCont.classList.remove('active-ui'), 2500);
             }
         }
+        vidCont.addEventListener('mousemove', resetUI);
+        vidCont.addEventListener('click', resetUI);
 
-        playerWrapper.addEventListener('mousemove', resetIdleTimer);
-        playerWrapper.addEventListener('click', resetIdleTimer);
-
-        // --- Keyboard Event Listeners ---
+        // Keyboard
         window.addEventListener('keydown', (e) => {
-            if (!videoModal.classList.contains('is-active')) return;
-            
+            if (!modal.classList.contains('active')) return;
             switch(e.key.toLowerCase()) {
-                case 'escape':
-                    if (!document.fullscreenElement) closeVideoModal();
-                    break;
-                case ' ': // Spacebar
-                    e.preventDefault(); // Prevent page scroll
-                    togglePlay();
-                    resetIdleTimer();
-                    break;
-                case 'f':
-                    toggleFullscreen();
-                    break;
-                case 'm':
-                    toggleMute();
-                    break;
-                case 'arrowright':
-                    mainVideo.currentTime = Math.min(mainVideo.currentTime + 5, mainVideo.duration);
-                    resetIdleTimer();
-                    break;
-                case 'arrowleft':
-                    mainVideo.currentTime = Math.max(mainVideo.currentTime - 5, 0);
-                    resetIdleTimer();
-                    break;
+                case 'escape': if (!document.fullscreenElement) closeVideo(); break;
+                case ' ': e.preventDefault(); togglePlay(); resetUI(); break;
+                case 'f': toggleFS(); break;
+                case 'm': toggleMute(); break;
+                case 'arrowright': video.currentTime = Math.min(video.currentTime + 5, video.duration); resetUI(); break;
+                case 'arrowleft': video.currentTime = Math.max(video.currentTime - 5, 0); resetUI(); break;
             }
         });
 
-        closeModalBtn.addEventListener('click', closeVideoModal);
+        /* ==========================================================================================
+           5. CANVAS BACKGROUND PARTICLES
+           ========================================================================================== */
+        const cvs = document.getElementById('fluidCanvas');
+        const ctx = cvs.getContext('2d');
+        let w, h, dots = [];
 
-        // -------------------------------------------------------------------------
-        // 9. BOOTSTRAP APP
-        // -------------------------------------------------------------------------
-        window.addEventListener('DOMContentLoaded', () => {
-            buildGrid();
-        });
+        function resize() {
+            w = cvs.width = window.innerWidth;
+            h = cvs.height = window.innerHeight;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        class Dot {
+            constructor() {
+                this.x = Math.random() * w; this.y = Math.random() * h;
+                this.vx = (Math.random() - 0.5) * 1.2; this.vy = (Math.random() - 0.5) * 1.2;
+                this.r = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx; this.y += this.vy;
+                if (this.x < 0) this.x = w; if (this.x > w) this.x = 0;
+                if (this.y < 0) this.y = h; if (this.y > h) this.y = 0;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255,255,255,0.4)';
+                ctx.fill();
+            }
+        }
+
+        const count = window.innerWidth < 768 ? 40 : 100;
+        for (let i = 0; i < count; i++) dots.push(new Dot());
+
+        function loop() {
+            ctx.clearRect(0, 0, w, h);
+            for (let i = 0; i < dots.length; i++) {
+                dots[i].update(); dots[i].draw();
+                for (let j = i + 1; j < dots.length; j++) {
+                    const dx = dots[i].x - dots[j].x;
+                    const dy = dots[i].y - dots[j].y;
+                    const dist = Math.sqrt(dx*dx + dy*dy);
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.strokeStyle = `rgba(255,255,255,${0.15 - dist/800})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.moveTo(dots[i].x, dots[i].y);
+                        ctx.lineTo(dots[j].x, dots[j].y);
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(loop);
+        }
+        loop();
+
+        /* Initialize App */
+        initGrid();
 
     </script>
 </body>
