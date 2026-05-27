@@ -3,191 +3,751 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🍟</text></svg>">
-    <title>Jaap-Commerical</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22><text y=%22.9em%22 font-size=%2290%22>🎬</text></svg>">
+    <title>Premium Ad Vault</title>
     <style>
-        /* ==========================================================================================
-           1. CORE SYSTEM ARCHITECTURE & RESET
-           ========================================================================================== */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        body, html { 
-            width: 100%; min-height: 100%; 
-            /* Animated Rainbow Background Gradient */
-            background: linear-gradient(-45deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
-            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
-            overflow-x: hidden; 
+        /* ==========================================================================
+           1. CSS VARIABLES & THEME SETUP
+           ========================================================================== */
+        :root {
+            --bg-color: #050505;
+            --primary-glow: #00ffcc;
+            --secondary-glow: #ff00ff;
+            --glass-bg: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(255, 255, 255, 0.08);
+            --text-main: #ffffff;
+            --text-muted: #888888;
+            --transition-smooth: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
         }
 
-        @keyframes gradientShift {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
+        /* ==========================================================================
+           2. RESET & BASE STYLES
+           ========================================================================== */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
         }
 
-        /* ==========================================================================================
-           2. MATHEMATICAL HSL RAINBOW OVERLAY LAYER
-           ========================================================================================== */
-        .ambient-wrapper { position: absolute; top: 0; left: 0; width: 100%; height: 100%; z-index: -1; pointer-events: none; }
-        
-        .rainbow-blob {
-            position: absolute;
-            width: 70vw; height: 70vw;
+        html, body {
+            width: 100%;
+            min-height: 100vh;
+            background-color: var(--bg-color);
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            color: var(--text-main);
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #0a0a0a;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #333;
+            border-radius: 5px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-glow);
+        }
+
+        /* ==========================================================================
+           3. BACKGROUND EFFECTS (CANVAS + CSS GRID)
+           ========================================================================== */
+        #particleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -2;
+            pointer-events: none;
+        }
+
+        .bg-grid {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background-image: 
+                linear-gradient(rgba(255, 255, 255, 0.02) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 255, 255, 0.02) 1px, transparent 1px);
+            background-size: 50px 50px;
+            z-index: -1;
+            pointer-events: none;
+            perspective: 1000px;
+            transform-style: preserve-3d;
+            animation: gridMove 20s linear infinite;
+        }
+
+        @keyframes gridMove {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(50px); }
+        }
+
+        /* Ambient Glow Orbs */
+        .ambient-orb {
+            position: fixed;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.4;
-            will-change: transform, background;
-            transition: background 0.1s linear;
+            filter: blur(150px);
+            z-index: -1;
+            pointer-events: none;
+            opacity: 0.5;
+            animation: orbFloat 10s ease-in-out infinite alternate;
+        }
+        .orb-1 {
+            top: -10%; left: -10%;
+            width: 50vw; height: 50vw;
+            background: var(--primary-glow);
+            animation-delay: 0s;
+        }
+        .orb-2 {
+            bottom: -10%; right: -10%;
+            width: 60vw; height: 60vw;
+            background: var(--secondary-glow);
+            animation-delay: -5s;
         }
 
-        /* ==========================================================================================
-           3. IOS-STYLE GLASS INTERFACE
-           ========================================================================================== */
-        .viewport { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            /* Remove height: 100vh; */
-            min-height: 100vh; /* Ensures it at least fills the screen */
-            padding: 50px 0;    /* Adds space at the top and bottom so buttons aren't flush against the edges */
-            gap: 30px; 
+        @keyframes orbFloat {
+            0% { transform: translate(0, 0) scale(1); }
+            100% { transform: translate(5%, 5%) scale(1.1); }
+        }
+
+        /* ==========================================================================
+           4. LAYOUT & HEADER
+           ========================================================================== */
+        .app-container {
+            position: relative;
+            z-index: 10;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 60px;
+        }
+
+        h1 {
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: -2px;
+            background: linear-gradient(90deg, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 15px;
+            text-transform: uppercase;
+        }
+
+        p.subtitle {
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            letter-spacing: 4px;
+            text-transform: uppercase;
+        }
+
+        /* ==========================================================================
+           5. 3D GLASSMORPHISM GRID & CARDS
+           ========================================================================== */
+        .video-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 30px;
+            width: 100%;
+        }
+
+        .card-wrapper {
+            perspective: 1500px;
+        }
+
+        .glass-card {
+            position: relative;
+            width: 100%;
+            height: 180px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--glass-border);
+            border-radius: 24px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transform-style: preserve-3d;
+            transition: transform 0.1s;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .glass-card::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background: linear-gradient(135deg, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 100%);
+            z-index: 1;
+            pointer-events: none;
+        }
+
+        .glass-card:hover {
+            border-color: rgba(255, 255, 255, 0.3);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.5), 0 0 40px rgba(0, 255, 204, 0.2);
+        }
+
+        .card-content {
+            transform: translateZ(40px);
+            z-index: 2;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 15px;
+            pointer-events: none;
+        }
+
+        .play-icon {
+            width: 48px;
+            height: 48px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border: 1px solid rgba(255,255,255,0.2);
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover .play-icon {
+            background: var(--text-main);
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.5);
+        }
+
+        .play-icon svg {
+            width: 20px;
+            height: 20px;
+            fill: var(--text-main);
+            margin-left: 4px;
+            transition: var(--transition-smooth);
+        }
+
+        .glass-card:hover .play-icon svg {
+            fill: #000;
+        }
+
+        .card-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            letter-spacing: 1px;
+            text-align: center;
+            padding: 0 15px;
+        }
+
+        /* ==========================================================================
+           6. CINEMATIC VIDEO PLAYER OVERLAY
+           ========================================================================== */
+        #cinematicOverlay {
+            position: fixed;
+            top: 0; left: 0; width: 100vw; height: 100vh;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(30px);
+            -webkit-backdrop-filter: blur(30px);
+            z-index: 9999;
+            display: none;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+
+        .player-container {
+            position: relative;
+            width: 90%;
+            max-width: 1200px;
+            border-radius: 20px;
+            overflow: hidden;
+            background: #000;
+            box-shadow: 0 30px 100px rgba(0,0,0,0.8), 0 0 80px rgba(0, 255, 204, 0.15);
+            border: 1px solid rgba(255,255,255,0.1);
+        }
+
+        video {
+            width: 100%;
+            height: auto;
+            display: block;
+            outline: none;
+        }
+
+        /* Custom Controls UI */
+        .custom-controls {
+            position: absolute;
+            bottom: 0; left: 0; right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.9), transparent);
+            padding: 40px 30px 20px 30px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        .player-container:hover .custom-controls,
+        .custom-controls.active {
+            opacity: 1;
+        }
+
+        /* Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 6px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 3px;
+            cursor: pointer;
+            position: relative;
+        }
+
+        .progress-filled {
+            height: 100%;
+            background: var(--primary-glow);
+            border-radius: 3px;
+            width: 0%;
+            position: relative;
+            box-shadow: 0 0 10px var(--primary-glow);
+        }
+
+        .progress-filled::after {
+            content: '';
+            position: absolute;
+            right: -6px; top: -4px;
+            width: 14px; height: 14px;
+            background: #fff;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.5);
+            transform: scale(0);
+            transition: transform 0.2s;
+        }
+
+        .progress-container:hover .progress-filled::after {
+            transform: scale(1);
+        }
+
+        /* Bottom Control Row */
+        .controls-row {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .control-group {
+            display: flex;
+            align-items: center;
+            gap: 20px;
+        }
+
+        .control-btn {
+            background: none; border: none;
+            color: white; cursor: pointer;
+            display: flex; align-items: center; justify-content: center;
+            transition: var(--transition-smooth);
+            opacity: 0.8;
         }
         
-        .glass-pill {
-            position: relative;
-            width: 90%; max-width: 700px; height: 95px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 60px;
+        .control-btn:hover {
+            opacity: 1;
+            transform: scale(1.1);
+            color: var(--primary-glow);
+        }
+
+        .control-btn svg {
+            width: 24px; height: 24px; fill: currentColor;
+        }
+
+        /* Volume Slider */
+        .volume-wrapper {
+            display: flex; align-items: center; gap: 10px;
+        }
+        input[type="range"].vol-slider {
+            -webkit-appearance: none;
+            width: 100px; height: 4px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 2px; outline: none; cursor: pointer;
+        }
+        input[type="range"].vol-slider::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 12px; height: 12px;
+            background: #fff; border-radius: 50%;
+            transition: 0.2s;
+        }
+        input[type="range"].vol-slider::-webkit-slider-thumb:hover {
+            box-shadow: 0 0 10px var(--primary-glow);
+            transform: scale(1.2);
+        }
+
+        /* Time Display */
+        .time-display {
+            font-size: 0.9rem; font-family: monospace; opacity: 0.8;
+        }
+
+        /* Top Close Button */
+        .close-overlay {
+            position: absolute;
+            top: -60px; right: 0;
+            width: 50px; height: 50px;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.4rem; font-weight: 700;
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-transform: uppercase; letter-spacing: 2px;
+            color: white; font-size: 24px; cursor: pointer;
+            transition: var(--transition-smooth);
         }
-
-        .glass-pill:hover {
-            transform: scale(1.03) translateY(-5px);
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+        .close-overlay:hover {
+            background: rgba(255,0,0,0.6);
+            transform: rotate(90deg);
+            border-color: rgba(255,0,0,0.8);
         }
-
-        /* ==========================================================================================
-           4. VIDEO PLAYER CENTERED OVERLAY
-           ========================================================================================== */
-        #videoOverlay {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
-            display: none; justify-content: center; align-items: center;
-            z-index: 1000; opacity: 0; transition: opacity 0.5s ease;
-        }
-
-        #mainVideo { 
-            width: 80%; max-width: 900px; height: auto;
-            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.2);
-            background: #000;
-        }
-
-        .controls {
-            position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
-            padding: 20px 40px; background: rgba(255,255,255,0.2); border-radius: 50px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3);
-        }
-
-        .x-close {
-            position: absolute; top: 40px; right: 40px; width: 60px; height: 60px;
-            background: rgba(255,255,255,0.2); border-radius: 50%;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 25px; cursor: pointer; transition: 0.3s;
-            z-index: 1001;
-        }
-
-        .x-close:hover { background: rgba(255,255,255,0.4); transform: rotate(90deg); }
-        input[type=range] { width: 200px; cursor: pointer; accent-color: white; }
+        
+        /* Utility */
+        .hidden { display: none !important; }
     </style>
 </head>
 <body>
 
-    <div class="ambient-wrapper">
-        <div class="rainbow-blob" style="top: -20%; left: -10%;"></div>
-        <div class="rainbow-blob" style="bottom: -20%; right: -10%;"></div>
-        <div class="rainbow-blob" style="top: 40%; left: 30%;"></div>
+    <canvas id="particleCanvas"></canvas>
+    <div class="bg-grid"></div>
+    <div class="ambient-orb orb-1"></div>
+    <div class="ambient-orb orb-2"></div>
+
+    <div class="app-container">
+        <header>
+            <h1>Commercial Vault</h1>
+            <p class="subtitle">High-Fidelity Advertising Archive</p>
+        </header>
+
+        <div class="video-grid" id="gridContainer">
+            </div>
     </div>
 
-    <div class="viewport">
-        <button class="glass-pill" onclick="openVideo('Funny.mp4')">McDonald's</button>
-        <button class="glass-pill" onclick="openVideo('commercial.mp4')">McDonald's #2</button>
-        <button class="glass-pill" onclick="openVideo('mp4.mp4')">McDonald's #3</button>
-       <button class="glass-pill" onclick="openVideo('wendy.mp4')">Wendys #1</button>
-       <button class="glass-pill" onclick="openVideo('wendy2.mp4')">Wendys #2</button>
-      <button class="glass-pill" onclick="openVideo('kfc.mp4')">KFC</button>
-      <button class="glass-pill" onclick="openVideo('domino.mp4')">Dominoes</button>
-      <button class="glass-pill" onclick="openVideo('apple.mp4')">Apple</button>
-     <button class="glass-pill" onclick="openVideo('chipotle.mp4')">Chipotle</button>
-     <button class="glass-pill" onclick="openVideo('chipotle2.mp4')">Chipotle #2</button>
-     <button class="glass-pill" onclick="openVideo('starbucks.mp4')">Starbucks</button>
-     <button class="glass-pill" onclick="openVideo('Ford.mp4')">Ford</button>
-     <button class="glass-pill" onclick="openVideo('coke.mp4')">Coca Cola</button>
-    <button class="glass-pill" onclick="openVideo('nike.mp4')">Nike</button>
-     <button class="glass-pill" onclick="openVideo('six.mp4')">Six Flags</button>
-     <button class="glass-pill" onclick="openVideo('subway.mp4')">Subway</button>
-   <button class="glass-pill" onclick="openVideo('amex.mp4')">American Express</button>
-     <button class="glass-pill" onclick="openVideo('macbook.mp4')">Macbook</button>
-       <button class="glass-pill" onclick="openVideo('allstate.mp4')">AllState</button>
-
-    </div>
-
-    <div id="videoOverlay">
-        <div class="x-close" onclick="closeVideo()">✕</div>
-        <video id="mainVideo" controls></video>
-        <div class="controls">
-            <span style="color:white; font-weight:bold;">VOLUME</span>
-        <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+    <div id="cinematicOverlay">
+        <div class="player-container">
+            <button class="close-overlay" id="closeBtn">✕</button>
+            <video id="cineVideo">
+                Your browser does not support HTML5 video.
+            </video>
+            
+            <div class="custom-controls" id="customControls">
+                <div class="progress-container" id="progressContainer">
+                    <div class="progress-filled" id="progressFilled"></div>
+                </div>
+                
+                <div class="controls-row">
+                    <div class="control-group">
+                        <button class="control-btn" id="playPauseBtn">
+                            <svg id="playIcon" viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>
+                            <svg id="pauseIcon" class="hidden" viewBox="0 0 24 24"><path d="M6 19h4V5H6v14zm8-14v14h4V5h-4z"/></svg>
+                        </button>
+                        
+                        <div class="volume-wrapper">
+                            <button class="control-btn" id="muteBtn">
+                                <svg viewBox="0 0 24 24"><path d="M3 9v6h4l5 5V4L7 9H3zm13.5 3c0-1.77-1.02-3.29-2.5-4.03v8.05c1.48-.73 2.5-2.25 2.5-4.02zM14 3.23v2.06c2.89.86 5 3.54 5 6.71s-2.11 5.85-5 6.71v2.06c4.01-.91 7-4.49 7-8.77s-2.99-7.86-7-8.77z"/></svg>
+                            </button>
+                            <input type="range" class="vol-slider" id="volumeSlider" min="0" max="1" step="0.05" value="0.5">
+                        </div>
+                        
+                        <div class="time-display">
+                            <span id="currentTime">0:00</span> / <span id="durationTime">0:00</span>
+                        </div>
+                    </div>
+                    
+                    <div class="control-group">
+                        <button class="control-btn" id="fullscreenBtn">
+                            <svg viewBox="0 0 24 24"><path d="M7 14H5v5h5v-2H7v-3zm-2-4h2V7h3V5H5v5zm12 7h-3v2h5v-5h-2v3zM14 5v2h3v3h2V5h-5z"/></svg>
+                        </button>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
     <script>
-        /* HSL MATH CYCLE FOR AMBIENT BLOB OVERLAYS */
-        let hue = 0;
-        const blobs = document.querySelectorAll('.rainbow-blob');
+        /* ==========================================================================
+           1. DATA INJECTION (Preserving original sources & titles)
+           ========================================================================== */
+        const videoData = [
+            { src: 'Funny.mp4', title: "McDonald's" },
+            { src: 'commercial.mp4', title: "McDonald's #2" },
+            { src: 'mp4.mp4', title: "McDonald's #3" },
+            { src: 'wendy.mp4', title: "Wendys #1" },
+            { src: 'wendy2.mp4', title: "Wendys #2" },
+            { src: 'kfc.mp4', title: "KFC" },
+            { src: 'domino.mp4', title: "Dominoes" },
+            { src: 'apple.mp4', title: "Apple" },
+            { src: 'chipotle.mp4', title: "Chipotle" },
+            { src: 'chipotle2.mp4', title: "Chipotle #2" },
+            { src: 'starbucks.mp4', title: "Starbucks" },
+            { src: 'Ford.mp4', title: "Ford" },
+            { src: 'coke.mp4', title: "Coca Cola" },
+            { src: 'nike.mp4', title: "Nike" },
+            { src: 'six.mp4', title: "Six Flags" },
+            { src: 'subway.mp4', title: "Subway" },
+            { src: 'amex.mp4', title: "American Express" },
+            { src: 'macbook.mp4', title: "Macbook" },
+            { src: 'allstate.mp4', title: "AllState" }
+        ];
 
-        function animateHSL() {
-            hue = (hue + 0.5) % 360;
-            blobs.forEach((b, i) => {
-                b.style.background = `hsl(${(hue + (i * 120)) % 360}, 80%, 50%)`;
+        const gridContainer = document.getElementById('gridContainer');
+
+        // SVG string for the play icon inside cards
+        const cardPlaySvg = `<svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg>`;
+
+        videoData.forEach((item) => {
+            const wrapper = document.createElement('div');
+            wrapper.className = 'card-wrapper';
+            
+            wrapper.innerHTML = `
+                <div class="glass-card" data-src="${item.src}">
+                    <div class="card-content">
+                        <div class="play-icon">${cardPlaySvg}</div>
+                        <div class="card-title">${item.title}</div>
+                    </div>
+                </div>
+            `;
+            gridContainer.appendChild(wrapper);
+        });
+
+        /* ==========================================================================
+           2. 3D TILT EFFECT FOR CARDS
+           ========================================================================== */
+        const cards = document.querySelectorAll('.glass-card');
+        
+        cards.forEach(card => {
+            card.addEventListener('mousemove', e => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                
+                const centerX = rect.width / 2;
+                const centerY = rect.height / 2;
+                
+                const rotateX = ((y - centerY) / centerY) * -15;
+                const rotateY = ((x - centerX) / centerX) * 15;
+                
+                card.style.transform = `rotateX(${rotateX}deg) rotateY(${rotateY}deg)`;
             });
-            requestAnimationFrame(animateHSL);
+            
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `rotateX(0deg) rotateY(0deg)`;
+            });
+
+            // Click event to open video
+            card.addEventListener('click', () => {
+                openCinematicVideo(card.getAttribute('data-src'));
+            });
+        });
+
+        /* ==========================================================================
+           3. CANVAS PARTICLE NETWORK ANIMATION
+           ========================================================================== */
+        const canvas = document.getElementById('particleCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        let particles = [];
+
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
         }
-        animateHSL();
+        window.addEventListener('resize', resizeCanvas);
+        resizeCanvas();
 
-        const ov = document.getElementById('videoOverlay');
-        const vid = document.getElementById('mainVideo');
-
-        function openVideo(src) {
-            vid.src = src;
-            ov.style.display = 'flex';
-            requestAnimationFrame(() => { ov.style.opacity = '1'; });
-            vid.play();
+        class Particle {
+            constructor() {
+                this.x = Math.random() * width;
+                this.y = Math.random() * height;
+                this.vx = (Math.random() - 0.5) * 0.5;
+                this.vy = (Math.random() - 0.5) * 0.5;
+                this.radius = Math.random() * 1.5 + 0.5;
+            }
+            update() {
+                this.x += this.vx;
+                this.y += this.vy;
+                if (this.x < 0 || this.x > width) this.vx *= -1;
+                if (this.y < 0 || this.y > height) this.vy *= -1;
+            }
+            draw() {
+                ctx.beginPath();
+                ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+                ctx.fillStyle = 'rgba(255, 255, 255, 0.3)';
+                ctx.fill();
+            }
         }
 
-        function closeVideo() {
-            ov.style.opacity = '0';
+        for (let i = 0; i < 100; i++) {
+            particles.push(new Particle());
+        }
+
+        function animateParticles() {
+            ctx.clearRect(0, 0, width, height);
+            
+            for (let i = 0; i < particles.length; i++) {
+                particles[i].update();
+                particles[i].draw();
+                
+                // Draw connecting lines
+                for (let j = i; j < particles.length; j++) {
+                    const dx = particles[i].x - particles[j].x;
+                    const dy = particles[i].y - particles[j].y;
+                    const dist = Math.sqrt(dx * dx + dy * dy);
+                    
+                    if (dist < 120) {
+                        ctx.beginPath();
+                        ctx.moveTo(particles[i].x, particles[i].y);
+                        ctx.lineTo(particles[j].x, particles[j].y);
+                        ctx.strokeStyle = `rgba(255, 255, 255, ${0.1 - dist/1200})`;
+                        ctx.lineWidth = 0.5;
+                        ctx.stroke();
+                    }
+                }
+            }
+            requestAnimationFrame(animateParticles);
+        }
+        animateParticles();
+
+        /* ==========================================================================
+           4. CUSTOM CINEMATIC VIDEO PLAYER LOGIC
+           ========================================================================== */
+        const overlay = document.getElementById('cinematicOverlay');
+        const video = document.getElementById('cineVideo');
+        const closeBtn = document.getElementById('closeBtn');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const playIcon = document.getElementById('playIcon');
+        const pauseIcon = document.getElementById('pauseIcon');
+        const progressContainer = document.getElementById('progressContainer');
+        const progressFilled = document.getElementById('progressFilled');
+        const muteBtn = document.getElementById('muteBtn');
+        const volumeSlider = document.getElementById('volumeSlider');
+        const currentTimeEl = document.getElementById('currentTime');
+        const durationTimeEl = document.getElementById('durationTime');
+        const fullscreenBtn = document.getElementById('fullscreenBtn');
+        const playerContainer = document.querySelector('.player-container');
+
+        // Open Modal
+        function openCinematicVideo(src) {
+            video.src = src;
+            overlay.style.display = 'flex';
+            // Force reflow
+            void overlay.offsetWidth;
+            overlay.style.opacity = '1';
+            video.play();
+            updatePlayIcon(true);
+        }
+
+        // Close Modal
+        function closeCinematicVideo() {
+            overlay.style.opacity = '0';
+            video.pause();
             setTimeout(() => {
-                vid.pause();
-                vid.src = '';
-                ov.style.display = 'none';
+                overlay.style.display = 'none';
+                video.src = '';
             }, 500);
         }
+        closeBtn.addEventListener('click', closeCinematicVideo);
 
-        function setVol(val) { vid.volume = val; }
+        // Escape key to close
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && overlay.style.display === 'flex') {
+                closeCinematicVideo();
+            }
+        });
 
-        window.onkeydown = (e) => { if(e.key === 'Escape') closeVideo(); };
+        // Play / Pause
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                updatePlayIcon(true);
+            } else {
+                video.pause();
+                updatePlayIcon(false);
+            }
+        }
+        playPauseBtn.addEventListener('click', togglePlay);
+        video.addEventListener('click', togglePlay);
+
+        function updatePlayIcon(isPlaying) {
+            if (isPlaying) {
+                playIcon.classList.add('hidden');
+                pauseIcon.classList.remove('hidden');
+            } else {
+                pauseIcon.classList.add('hidden');
+                playIcon.classList.remove('hidden');
+            }
+        }
+        video.addEventListener('play', () => updatePlayIcon(true));
+        video.addEventListener('pause', () => updatePlayIcon(false));
+
+        // Progress Bar
+        video.addEventListener('timeupdate', () => {
+            const percent = (video.currentTime / video.duration) * 100;
+            progressFilled.style.width = `${percent}%`;
+            currentTimeEl.textContent = formatTime(video.currentTime);
+        });
+
+        video.addEventListener('loadedmetadata', () => {
+            durationTimeEl.textContent = formatTime(video.duration);
+        });
+
+        function scrub(e) {
+            const scrubTime = (e.offsetX / progressContainer.offsetWidth) * video.duration;
+            video.currentTime = scrubTime;
+        }
+        
+        let mousedown = false;
+        progressContainer.addEventListener('click', scrub);
+        progressContainer.addEventListener('mousemove', (e) => mousedown && scrub(e));
+        progressContainer.addEventListener('mousedown', () => mousedown = true);
+        progressContainer.addEventListener('mouseup', () => mousedown = false);
+
+        // Volume
+        volumeSlider.addEventListener('input', (e) => {
+            video.volume = e.target.value;
+            video.muted = e.target.value === '0';
+        });
+
+        muteBtn.addEventListener('click', () => {
+            video.muted = !video.muted;
+            if(video.muted) {
+                volumeSlider.value = 0;
+            } else {
+                volumeSlider.value = video.volume || 0.5;
+            }
+        });
+
+        // Fullscreen
+        fullscreenBtn.addEventListener('click', () => {
+            if (!document.fullscreenElement) {
+                playerContainer.requestFullscreen().catch(err => {
+                    console.log(`Error attempting to enable fullscreen: ${err.message}`);
+                });
+            } else {
+                document.exitFullscreen();
+            }
+        });
+
+        // Format Time Helper
+        function formatTime(seconds) {
+            if (isNaN(seconds)) return "0:00";
+            const min = Math.floor(seconds / 60);
+            const sec = Math.floor(seconds % 60);
+            return `${min}:${sec < 10 ? '0' : ''}${sec}`;
+        }
     </script>
 </body>
 </html>
