@@ -62,7 +62,8 @@
         color: #000;
         background: linear-gradient(45deg, #ff9a9e, #fad0c4, #fbc2eb, #a18cd1, #ff9a9e);
         background-size: 400% 400%;
-        animation: fluidGradient 15s ease infinite;
+        /* Changed 15s to 3s for a fast cycle */
+        animation: fluidGradient 3s ease infinite;
         overflow-x: hidden;
         scroll-behavior: smooth;
     }
@@ -84,18 +85,19 @@
            3. LIQUID RAINBOW BACKGROUND LAYER
            ========================================================================================== */
         .bg-container {
-            position: fixed;
-            top: 0; left: 0; width: 100vw; height: 100vh;
-            z-index: -100;
-            overflow: hidden;
-            background: linear-gradient(
-                -45deg, 
-                var(--fluid-1), var(--fluid-2), var(--fluid-3), 
-                var(--fluid-4), var(--fluid-5), var(--fluid-6)
-            );
-            background-size: 400% 400%;
-            animation: fluidGradient 20s ease infinite;
-        }
+        position: fixed;
+        top: 0; left: 0; width: 100vw; height: 100vh;
+        z-index: -100;
+        overflow: hidden;
+        background: linear-gradient(
+            -45deg, 
+            var(--fluid-1), var(--fluid-2), var(--fluid-3), 
+            var(--fluid-4), var(--fluid-5), var(--fluid-6)
+        );
+        background-size: 400% 400%;
+        /* Changed 20s to 3s for a fast cycle */
+        animation: fluidGradient 3s ease infinite;
+    }
 
         .bg-overlay {
             position: absolute;
