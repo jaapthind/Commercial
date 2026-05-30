@@ -137,6 +137,42 @@
             box-shadow: 0 20px 50px rgba(0,0,0,0.4);
             transform: scale(1.02);
         }
+        /* ==========================================================================================
+   ARCADE FRY CATCHER GAME CORE GRAPHICS
+   ========================================================================================== */
+        #fryGameCanvas {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            z-index: 99999; display: none; pointer-events: none; background: rgba(0,0,0,0.4);
+        }
+        /* Glass-tinted Red Fry Carton Basket */
+        #fryCarton {
+            position: fixed; bottom: 40px; left: 50%; width: 120px; height: 100px;
+            background: rgba(255, 0, 85, 0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
+            border: 3px solid #ff0055; border-radius: 10px 10px 30px 30px;
+            transform: translateX(-50%); pointer-events: none;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 20px 20px rgba(255,255,255,0.2);
+        }
+        /* Cutout rim style for the top of the box */
+        #fryCarton::before {
+            content: ''; position: absolute; top: -3px; left: 15%; width: 70%; height: 25px;
+            background: transparent; border-bottom: 3px solid #ff0055; border-radius: 50%;
+        }
+        /* Falling Golden Sticks */
+        .falling-fry {
+            position: absolute; width: 12px; height: 75px;
+            background: linear-gradient(to bottom, #ffeb00, #ffaa00);
+            border-radius: 4px; box-shadow: 0 4px 10px rgba(0,0,0,0.3);
+        }
+        #gameScore {
+            position: fixed; top: 40px; right: 40px; color: #ffeb00;
+            font-size: 3rem; font-weight: 900; font-family: monospace;
+            text-shadow: 0 0 20px rgba(0,0,0,0.8), 0 0 5px #ff0055;
+        }
+        #gameInstructions {
+            position: fixed; top: 40px; left: 40px; color: white;
+            font-size: 1.5rem; font-weight: bold; background: rgba(0,0,0,0.6);
+            padding: 10px 20px; border-radius: 15px; border: 1px solid rgba(255,255,255,0.2);
+        }
 
         .viewport { 
             display: flex; 
@@ -556,6 +592,109 @@ function sendSuggestion(e) {
         });
 }
     </script>
+    <div id="fryGameCanvas">
+    <div id="gameInstructions">🍟 FRY CATCHER MODE | Press 'X' to Exit</div>
+    <div id="gameScore">00</div>
+    <div id="fryCarton"></div>
+</div>
+
+<script>
+    let typedBuffer = "";
+    let gameActive = false;
+    let score = 0;
+    let spawnTimer, gameLoopTimer;
+    let currentX = window.innerWidth / 2;
+    const canvas = document.getElementById('fryGameCanvas');
+    const carton = document.getElementById('fryCarton');
+    const scoreDisplay = document.getElementById('gameScore');
+
+    // 1. Secret Keyword Trigger Detector ('fry')
+    window.addEventListener('keydown', (e) => {
+        if (!gameActive) {
+            typedBuffer += e.key.toLowerCase();
+            if (typedBuffer.endsWith("fry")) {
+                startFryGame();
+                typedBuffer = "";
+            }
+            if (typedBuffer.length > 10) typedBuffer = typedBuffer.substring(1);
+        } else if (e.key.toLowerCase() === 'x') {
+            stopFryGame();
+        }
+    });
+
+    function startFryGame() {
+        gameActive = true;
+        score = 0;
+        scoreDisplay.innerText = "00";
+        canvas.style.display = 'block';
+        document.body.style.cursor = 'none'; // Lock mouse cursor away
+        
+        // Horizontal Lock Tracking Axis Engine
+        window.addEventListener('mousemove', updateCartonPosition);
+        
+        // Spawn loop and Game Physics calculation engine loops
+        spawnTimer = setInterval(spawnGoldenFry, 400);
+        gameLoopTimer = setInterval(updatePhysics, 16); // Smooth ~60fps grid check
+    }
+
+    function updateCartonPosition(e) {
+        currentX = e.clientX;
+        carton.style.left = currentX + 'px';
+    }
+
+    function spawnGoldenFry() {
+        const fry = document.createElement('div');
+        fry.className = 'falling-fry';
+        fry.style.left = (Math.random() * (window.innerWidth - 40) + 20) + 'px';
+        fry.style.top = '-80px';
+        
+        // Add random slight rotational slant to falling sticks for realism
+        let slant = (Math.random() * 30 - 15);
+        fry.style.transform = `rotate(${slant}deg)`;
+        
+        canvas.appendChild(fry);
+    }
+
+    function updatePhysics() {
+        const fries = document.querySelectorAll('.falling-fry');
+        const cartonRect = carton.getBoundingClientRect();
+
+        fries.forEach(fry => {
+            let topPos = parseFloat(fry.style.top);
+            topPos += 7; // Downward dropping gravity speed velocity
+            fry.style.top = topPos + 'px';
+
+            const fryRect = fry.getBoundingClientRect();
+
+            // High Precision Collision Detection Grid
+            if (
+                fryRect.bottom >= cartonRect.top &&
+                fryRect.top <= cartonRect.bottom &&
+                fryRect.right >= cartonRect.left &&
+                fryRect.left <= cartonRect.right
+            ) {
+                fry.remove();
+                score++;
+                scoreDisplay.innerText = score < 10 ? "0" + score : score;
+            } else if (topPos > window.innerHeight) {
+                fry.remove(); // Performance Garbage Collection cleaning
+            }
+        });
+    }
+
+    function stopFryGame() {
+        gameActive = false;
+        canvas.style.display = 'none';
+        document.body.style.cursor = 'default'; // Give back default mouse control
+        
+        window.removeEventListener('mousemove', updateCartonPosition);
+        clearInterval(spawnTimer);
+        clearInterval(gameLoopTimer);
+        
+        // Purge leftover game elements safely
+        document.querySelectorAll('.falling-fry').forEach(f => f.remove());
+    }
+</script>
     <div id="suggestionWrapper">
     <div id="suggestionIcon" onclick="toggleSuggestionBox()">
         👽
