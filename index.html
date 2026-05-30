@@ -370,7 +370,8 @@
             emoji.innerText = emojiBank[Math.floor(Math.random() * emojiBank.length)];
             
             // Position it at click location
-            emoji.style.left = e.clientX + 'px';
+// Position it at a random horizontal spot (0 to 100% width)
+            emoji.style.left = Math.random() * 95 + 'vw';
             emoji.style.top = (e.clientY + 20) + 'px';
             
             document.getElementById('emojiContainer').appendChild(emoji);
