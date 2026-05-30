@@ -122,15 +122,16 @@
         }
 
         #mainVideo { 
-            width: 80vw;             
-            max-width: 800px;        
-            max-height: 70vh;
-            height: auto;
-            border-radius: 20px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
-            border: 1px solid rgba(255,255,255,0.3);
-            background: #000;
-        }
+        width: 90vw;             
+        max-width: 1100px; /* Increased from 800px for a more normal, larger theater feel */        
+        max-height: 80vh;  /* Increased from 70vh to give the video more vertical breathing room */
+        height: auto;
+        border-radius: 20px; 
+        box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+        border: 1px solid rgba(255,255,255,0.3);
+        background: #000;
+        outline: none; /* Prevents awkward focus borders on click */
+    }
 
         .controls {
             position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
@@ -198,6 +199,10 @@
         <button class="glass-pill" onclick="openVideo('chevron.mp4')">Chevron</button>
         <button class="glass-pill" onclick="openVideo('chevron2.mp4')">Chevron #2</button>
         <button class="glass-pill" onclick="openVideo('dorito.mp4')">Doritoes</button>
+        <button class="glass-pill" onclick="openVideo('dorito2.mp4')">Doritoes #2</button>
+        <button class="glass-pill" onclick="openVideo('pepsi.mp4')">Pepsi</button>
+        <button class="glass-pill" onclick="openVideo('pepsi2.mp4')">Pepsi #2</button>
+        <button class="glass-pill" onclick="openVideo('doordash.mp4')">DoorDash</button>
     </div>
 
     <div id="videoOverlay">
