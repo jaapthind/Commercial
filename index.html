@@ -42,39 +42,73 @@
         }
 
         /* ==========================================================================================
-           3. IOS-STYLE GLASS INTERFACE
+           3. IOS-STYLE GLASS INTERFACE & SEARCH BAR
            ========================================================================================== */
-        .viewport { 
-            display: flex; 
-            flex-direction: column; 
-            align-items: center; 
-            /* Remove height: 100vh; */
-            min-height: 100vh; /* Ensures it at least fills the screen */
-            padding: 50px 0;    /* Adds space at the top and bottom so buttons aren't flush against the edges */
-            gap: 30px; 
+        .search-container {
+            margin-top: 30px;
+            display: flex;
+            justify-content: center;
+            width: 100%;
         }
-        
-        .glass-pill {
-            position: relative;
-            width: 90%; max-width: 700px; height: 95px;
+
+        .glass-search {
+            width: 90%;
+            max-width: 600px;
+            padding: 18px 30px;
+            font-size: 1.2rem;
+            color: white;
             background: rgba(255, 255, 255, 0.15);
             backdrop-filter: blur(35px);
             -webkit-backdrop-filter: blur(35px);
             border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 60px;
-            display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 1.4rem; font-weight: 700;
-            cursor: pointer;
-            transition: all 0.5s cubic-bezier(0.165, 0.84, 0.44, 1);
+            border-radius: 50px;
+            outline: none;
+            transition: all 0.3s ease;
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
-            text-transform: uppercase; letter-spacing: 2px;
+            letter-spacing: 1px;
+        }
+
+        .glass-search::placeholder {
+            color: rgba(255, 255, 255, 0.7);
+        }
+
+        .glass-search:focus {
+            background: rgba(255, 255, 255, 0.25);
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: 0 15px 40px rgba(0,0,0,0.4);
+            transform: scale(1.02);
+        }
+
+        .viewport { 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            min-height: 100vh; 
+            padding: 20px 0 100px 0; 
+            gap: 20px; 
+        }
+        
+        .glass-pill {
+            position: relative;
+            width: 90%; max-width: 500px; height: 65px;
+            background: rgba(255, 255, 255, 0.15);
+            backdrop-filter: blur(35px);
+            -webkit-backdrop-filter: blur(35px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 40px;
+            display: flex; align-items: center; justify-content: center;
+            color: white; font-size: 1.1rem; font-weight: 700;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
+            text-transform: uppercase; letter-spacing: 1.5px;
         }
 
         .glass-pill:hover {
-            transform: scale(1.03) translateY(-5px);
+            transform: scale(1.03) translateY(-3px);
             background: rgba(255, 255, 255, 0.25);
             border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
         }
 
         /* ==========================================================================================
@@ -82,43 +116,55 @@
            ========================================================================================== */
         #videoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0, 0, 0, 0.6); backdrop-filter: blur(20px);
+            background: rgba(0, 0, 0, 0.8); backdrop-filter: blur(30px);
             display: none; justify-content: center; align-items: center;
             z-index: 1000; opacity: 0; transition: opacity 0.5s ease;
         }
 
         #mainVideo { 
-            width: 95vw;             /* Takes up 95% of the viewport width on small screens */
-            max-width: 900px;        /* Caps it perfectly so it doesn't get stretched on big screens */
+            width: 80vw;             
+            max-width: 800px;        
+            max-height: 70vh;
             height: auto;
-            border-radius: 30px; 
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-            border: 2px solid rgba(255,255,255,0.2);
+            border-radius: 20px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.6);
+            border: 1px solid rgba(255,255,255,0.3);
             background: #000;
         }
 
         .controls {
             position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
-            padding: 20px 40px; background: rgba(255,255,255,0.2); border-radius: 50px;
+            padding: 15px 35px; background: rgba(255,255,255,0.15); border-radius: 50px;
             backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3);
+            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
         }
 
         .x-close {
-            position: absolute; top: 40px; right: 40px; width: 60px; height: 60px;
+            position: absolute; top: 40px; right: 40px; width: 50px; height: 50px;
             background: rgba(255,255,255,0.2); border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
-            color: white; font-size: 25px; cursor: pointer; transition: 0.3s;
+            color: white; font-size: 22px; cursor: pointer; transition: 0.3s;
             z-index: 1001;
+            border: 1px solid rgba(255,255,255,0.2);
         }
 
-        .x-close:hover { background: rgba(255,255,255,0.4); transform: rotate(90deg); }
+        .x-close:hover { 
+            background: rgba(255,255,255,0.4); 
+            transform: rotate(90deg); 
+            border-color: rgba(255,255,255,0.6);
+        }
+        
         input[type=range] { width: 200px; cursor: pointer; accent-color: white; }
     </style>
 </head>
 <body>
-    <div style="text-align: center; padding: 50px 20px; color: white;">
+    <div style="text-align: center; padding: 50px 20px 10px 20px; color: white;">
         <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
         <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
+        
+        <div class="search-container">
+            <input type="text" id="searchInput" class="glass-search" placeholder="Search for a commercial..." onkeyup="filterCommercials()">
+        </div>
     </div>
 
     <div class="ambient-wrapper">
@@ -127,46 +173,63 @@
         <div class="rainbow-blob" style="top: 40%; left: 30%;"></div>
     </div>
 
-    <div class="viewport">
+    <div class="viewport" id="buttonContainer">
         <button class="glass-pill" onclick="openVideo('Funny.mp4')">McDonald's</button>
         <button class="glass-pill" onclick="openVideo('commercial.mp4')">McDonald's #2</button>
         <button class="glass-pill" onclick="openVideo('mp4.mp4')">McDonald's #3</button>
-       <button class="glass-pill" onclick="openVideo('wendy.mp4')">Wendys #1</button>
-       <button class="glass-pill" onclick="openVideo('wendy2.mp4')">Wendys #2</button>
-      <button class="glass-pill" onclick="openVideo('kfc.mp4')">KFC</button>
-      <button class="glass-pill" onclick="openVideo('domino.mp4')">Dominoes</button>
-      <button class="glass-pill" onclick="openVideo('apple.mp4')">Apple</button>
-     <button class="glass-pill" onclick="openVideo('chipotle.mp4')">Chipotle</button>
-     <button class="glass-pill" onclick="openVideo('chipotle2.mp4')">Chipotle #2</button>
-     <button class="glass-pill" onclick="openVideo('starbucks.mp4')">Starbucks</button>
-     <button class="glass-pill" onclick="openVideo('Ford.mp4')">Ford</button>
-     <button class="glass-pill" onclick="openVideo('coke.mp4')">Coca Cola</button>
-    <button class="glass-pill" onclick="openVideo('nike.mp4')">Nike</button>
-     <button class="glass-pill" onclick="openVideo('six.mp4')">Six Flags</button>
-     <button class="glass-pill" onclick="openVideo('subway.mp4')">Subway</button>
-   <button class="glass-pill" onclick="openVideo('amex.mp4')">American Express</button>
-     <button class="glass-pill" onclick="openVideo('macbook.mp4')">Macbook</button>
-     <button class="glass-pill" onclick="openVideo('allstate.mp4')">AllState</button>
-    <button class="glass-pill" onclick="openVideo('burger.mp4')">Burger King #1</button>
- <button class="glass-pill" onclick="openVideo('burger2.mp4')">Burger King #2</button>
-  <button class="glass-pill" onclick="openVideo('chevron.mp4')">Chevron</button>
-   <button class="glass-pill" onclick="openVideo('chevron2.mp4')">Chevron #2</button>
-    <button class="glass-pill" onclick="openVideo('dorito.mp4')">Doritoes</button>
-
-
+        <button class="glass-pill" onclick="openVideo('wendy.mp4')">Wendys #1</button>
+        <button class="glass-pill" onclick="openVideo('wendy2.mp4')">Wendys #2</button>
+        <button class="glass-pill" onclick="openVideo('kfc.mp4')">KFC</button>
+        <button class="glass-pill" onclick="openVideo('domino.mp4')">Dominoes</button>
+        <button class="glass-pill" onclick="openVideo('apple.mp4')">Apple</button>
+        <button class="glass-pill" onclick="openVideo('chipotle.mp4')">Chipotle</button>
+        <button class="glass-pill" onclick="openVideo('chipotle2.mp4')">Chipotle #2</button>
+        <button class="glass-pill" onclick="openVideo('starbucks.mp4')">Starbucks</button>
+        <button class="glass-pill" onclick="openVideo('Ford.mp4')">Ford</button>
+        <button class="glass-pill" onclick="openVideo('coke.mp4')">Coca Cola</button>
+        <button class="glass-pill" onclick="openVideo('nike.mp4')">Nike</button>
+        <button class="glass-pill" onclick="openVideo('six.mp4')">Six Flags</button>
+        <button class="glass-pill" onclick="openVideo('subway.mp4')">Subway</button>
+        <button class="glass-pill" onclick="openVideo('amex.mp4')">American Express</button>
+        <button class="glass-pill" onclick="openVideo('macbook.mp4')">Macbook</button>
+        <button class="glass-pill" onclick="openVideo('allstate.mp4')">AllState</button>
+        <button class="glass-pill" onclick="openVideo('burger.mp4')">Burger King #1</button>
+        <button class="glass-pill" onclick="openVideo('burger2.mp4')">Burger King #2</button>
+        <button class="glass-pill" onclick="openVideo('chevron.mp4')">Chevron</button>
+        <button class="glass-pill" onclick="openVideo('chevron2.mp4')">Chevron #2</button>
+        <button class="glass-pill" onclick="openVideo('dorito.mp4')">Doritoes</button>
     </div>
 
     <div id="videoOverlay">
         <div class="x-close" onclick="closeVideo()">✕</div>
         <video id="mainVideo" controls></video>
         <div class="controls">
-            <span style="color:white; font-weight:bold;">VOLUME</span>
-        <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+            <span style="color:white; font-weight:bold; letter-spacing: 1px;">VOLUME</span>
+            <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
         </div>
     </div>
 
     <script>
-        /* HSL MATH CYCLE FOR AMBIENT BLOB OVERLAYS */
+        /* ==========================================================================================
+           5. SEARCH FILTER ENGINE
+           ========================================================================================== */
+        function filterCommercials() {
+            const input = document.getElementById('searchInput').value.toUpperCase();
+            const buttons = document.querySelectorAll('.glass-pill');
+            
+            buttons.forEach(button => {
+                const text = button.innerText.toUpperCase();
+                if (text.indexOf(input) > -1) {
+                    button.style.display = "flex";
+                } else {
+                    button.style.display = "none";
+                }
+            });
+        }
+
+        /* ==========================================================================================
+           6. HSL MATH CYCLE FOR AMBIENT BLOB OVERLAYS 
+           ========================================================================================== */
         let hue = 0;
         const blobs = document.querySelectorAll('.rainbow-blob');
 
@@ -179,6 +242,9 @@
         }
         animateHSL();
 
+        /* ==========================================================================================
+           7. VIDEO OVERLAY & CONTROL LOGIC
+           ========================================================================================== */
         const ov = document.getElementById('videoOverlay');
         const vid = document.getElementById('mainVideo');
 
