@@ -135,6 +135,19 @@
         video::-webkit-media-controls {
             zoom: 1.25; /* Enlarges the play, pause, fullscreen, and download buttons safely without cutting them off */
         }
+        .header-glass-box {
+            margin: 0 auto 30px auto;       /* Centers the box */
+            padding: 30px;                  /* Adds breathing room inside the box */
+            max-width: 800px;               /* Keeps it from becoming too wide */
+            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
+            backdrop-filter: blur(20px);    /* This is the secret for the "liquid glass" look */
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-radius: 30px;            /* Soft, rounded corners */
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            border-left: 1px solid rgba(255, 255, 255, 0.6);
+            border-top: 1px solid rgba(255, 255, 255, 0.6);
+        }
         
                  .glass-pill {
             position: relative;
@@ -219,8 +232,10 @@
 </head>
 <body>
     <div style="text-align: center; padding: 50px 20px 10px 20px; color: #000000;">
-        <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
-        <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
+        <div class="header-glass-box">
+            <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
+            <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
+        </div>
         
         <div class="search-container">
             <input type="text" id="searchInput" class="glass-search" placeholder="Search for a commercial..." onkeyup="filterCommercials()">
