@@ -202,11 +202,15 @@
    ========================================================================================== */
         #suggestionWrapper {
             position: fixed;
-            bottom: 30px;
-            left: 30px;
+            bottom: 60px; /* Bumped up slightly so it doesn't clip off the bottom edge when scaled */
+            left: 60px;   /* Shifted right slightly so it doesn't clip off the left screen edge */
             z-index: 5000;
             display: flex;
             align-items: flex-end;
+            
+            /* THE 1 LINE TWEAK: Scales the entire suggestion system up by 2.5x */
+            transform: scale(2.5); 
+            transform-origin: bottom left; /* Ensures it scales outward from the bottom-left corner cleanly */
         }
         
         /* Tiny Closed State Circle */
