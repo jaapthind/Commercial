@@ -88,8 +88,11 @@
         }
 
         #mainVideo { 
-            width: 80%; max-width: 900px; height: auto;
-            border-radius: 30px; box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            width: 95vw;             /* Takes up 95% of the viewport width on small screens */
+            max-width: 900px;        /* Caps it perfectly so it doesn't get stretched on big screens */
+            height: auto;
+            border-radius: 30px; 
+            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
             border: 2px solid rgba(255,255,255,0.2);
             background: #000;
         }
