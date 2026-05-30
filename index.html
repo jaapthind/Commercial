@@ -20,24 +20,27 @@
             overflow-x: hidden; 
         }
         /* Custom Glass Scrollbar for Chrome, Safari, and Edge */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(255, 255, 255, 0.05); 
-            backdrop-filter: blur(10px);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.3); 
-            border-radius: 10px;
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.5);
-            border: 2px solid transparent;
-            background-clip: padding-box;
-        }
+                    ::-webkit-scrollbar {
+                width: 16px; /* Wider so it's super easy to see and grab */
+            }
+            ::-webkit-scrollbar-track {
+                background: rgba(255, 255, 255, 0.08); 
+                backdrop-filter: blur(40px);
+                -webkit-backdrop-filter: blur(40px);
+                border-left: 1px solid rgba(255, 255, 255, 0.2);
+            }
+            ::-webkit-scrollbar-thumb {
+                /* High-contrast neon rainbow gradient directly on the scrollbar handle */
+                background: linear-gradient(180deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
+                border-radius: 50px;
+                border: 3px solid rgba(255, 255, 255, 0.4); /* Chunky glass rim look */
+                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6), 0 0 15px rgba(0, 0, 0, 0.5);
+            }
+            ::-webkit-scrollbar-thumb:hover {
+                border-color: rgba(255, 255, 255, 0.8);
+                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 255, 255, 0.6);
+                cursor: pointer;
+            }
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -110,31 +113,32 @@
             transform: scale(1.3); /* Increases native play/pause/fullscreen buttons by 30% */
         }
         
-                .glass-pill {
+                 .glass-pill {
             position: relative;
             width: 90%; 
-            max-width: 650px;       /* Increased from 500px to look grander */
-            height: 80px;           /* Increased from 65px for a chunkier, premium look */
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 40px;
+            max-width: 900px;       /* 2x width expansion from original 500px architecture */
+            height: 120px;          /* Massive 2x chunkier target field */
+            background: rgba(255, 255, 255, 0.12);
+            backdrop-filter: blur(40px);
+            -webkit-backdrop-filter: blur(40px);
+            border: 2px solid rgba(255, 255, 255, 0.35); /* Solid glass outline */
+            border-radius: 60px;    /* Keeps the perfect capsule form factor */
             display: flex; align-items: center; justify-content: center;
             color: white; 
-            font-size: 1.4rem;      /* Bumped up from 1.1rem so the text pops */
-            font-weight: 700;
+            font-size: 2.2rem;      /* Huge text size so the brand labels look massive */
+            font-weight: 800;       /* Extra bold stance */
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
-            box-shadow: 0 8px 25px rgba(0,0,0,0.2);
-            text-transform: uppercase; letter-spacing: 1.5px;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Snappy bounce effect */
+            box-shadow: 0 15px 35px rgba(0,0,0,0.25), inset 0 0 15px rgba(255,255,255,0.2);
+            text-transform: uppercase; 
+            letter-spacing: 3px;
         }
-
+        
         .glass-pill:hover {
-            transform: scale(1.03) translateY(-3px);
+            transform: scale(1.04) translateY(-5px);
             background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.6);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.7);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.4);
         }
 
         /* ==========================================================================================
