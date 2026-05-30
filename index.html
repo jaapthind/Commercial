@@ -9,16 +9,32 @@
         /* ==========================================================================================
            1. CORE SYSTEM ARCHITECTURE & RESET
            ========================================================================================== */
+        /* ==========================================================================================
+           1. CORE SYSTEM ARCHITECTURE & RESET (WITH DOUBLE-LAYER BACKGROUND MASK)
+           ========================================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
             width: 100%; min-height: 100%; 
-            /* Animated Rainbow Background Gradient */
-            background: linear-gradient(-45deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
-            background-size: 400% 400%;
-            animation: gradientShift 15s ease infinite;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             overflow-x: hidden; 
             color: #000000; /* Forces global text to black */
+
+            /* MULTIPLE BACKGROUND ENGINE:
+               Layer 1 (Top): Your translucent image blended at 80% lightened opacity with a white background tint
+               Layer 2 (Bottom): The animated moving rainbow mesh
+            */
+            background: 
+                linear-gradient(rgba(255, 255, 255, 0.8), rgba(255, 255, 255, 0.8)), 
+                url('logofinal.png'), 
+                linear-gradient(-45deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
+            
+            /* Background Rules mapped respectively to each layer */
+            background-repeat: no-repeat, repeat-y, no-repeat;
+            background-position: top center, top center, center;
+            background-size: 100% 100%, 100% auto, 400% 400%;
+            background-attachment: scroll, scroll, fixed;
+            
+            animation: gradientShift 15s ease infinite;
         }
         /* Custom Glass Scrollbar for Chrome, Safari, and Edge */
                     ::-webkit-scrollbar {
@@ -142,26 +158,10 @@
         /* ==========================================================================================
    ULTRA-ADAPTIVE FULL-SCREEN LOGO BACKGROUND MASK OVERLAY
    ========================================================================================== */
-        .background-logo-mask {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            z-index: -1;         /* Sits directly above the body gradient, behind all text and buttons */
-            pointer-events: none; /* Let's all user mouse clicks pass straight through to the pills */
-            
-            /* Image Loading & Formatting Core */
-            background-image: url('logofinal.png'); 
-            background-repeat: no-repeat;  /* Stops the image from repeating like tiles */
-            background-position: center;   /* Anchors the center of the image directly to the middle of the screen */
-            
-            /* The Adaptive Coverage Secret Tweak */
-            background-size: cover;        /* Scales the image dynamically so it always fills 100% width and height, bleeding off-screen to prevent white space */
-            
-            /* 80% Lightened Opacity Filter Blur */
-            opacity: 0.2;                  /* 20% visibility (80% faded out) so the rainbow shifts through nicely */
-        }
+        /* ==========================================================================================
+   SEAMLESS VERTICAL SCROLLING BACKGROUND MASK OVERLAY
+   ========================================================================================== */
+
         
         .glass-pill:hover {
             transform: scale(1.04) translateY(-5px);
@@ -217,7 +217,6 @@
     </style>
 </head>
 <body>
-    <div class="background-logo-mask"></div>
     <div style="text-align: center; padding: 50px 20px 10px 20px; color: #000000;">
         <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
         <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
