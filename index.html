@@ -266,6 +266,27 @@
             box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
+        /* ==========================================================================================
+   PREMIUM BLACK SPLASH ENTER SCREEN
+   ========================================================================================== */
+        #introOverlay {
+            position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+            background: #000000; z-index: 999999; /* Sits on top of absolutely everything */
+            display: flex; flex-direction: column; align-items: center; justify-content: center;
+            cursor: pointer; transition: opacity 2s ease, visibility 2s ease;
+        }
+        
+        #enterText {
+            color: #ffffff; font-size: 2.5rem; font-weight: 800;
+            text-transform: uppercase; letter-spacing: 5px;
+            font-family: sans-serif;
+            animation: pulseGlow 2s infinite ease-in-out;
+        }
+        
+        @keyframes pulseGlow {
+            0%, 100% { opacity: 0.4; transform: scale(0.98); text-shadow: 0 0 10px rgba(255,255,255,0); }
+            50% { opacity: 1; transform: scale(1); text-shadow: 0 0 20px rgba(255,255,255,0.6); }
+        }
         
         #suggestionIcon:hover {
             transform: scale(1.1) translateY(-5px);
@@ -407,6 +428,29 @@
 </script>
 </head>
 <body>
+    <div id="introOverlay" onclick="enterSite()">
+    <div id="enterText">CLICK TO ENTER SITE</div>
+</div>
+
+<script>
+function enterSite() {
+    // 1. Instantly trigger the startup audio crisp and on time
+    const audio = new Audio('startup.mp3');
+    audio.play().catch(err => console.log("Audio play blocked:", err));
+
+    // 2. Grab the splash screen element
+    const intro = document.getElementById('introOverlay');
+
+    // 3. Fade it out smoothly using our 2-second CSS transition
+    intro.style.opacity = '0';
+    intro.style.visibility = 'hidden';
+
+    // 4. Performance cleanup: completely erase it from layout after fade finishes
+    setTimeout(() => {
+        intro.remove();
+    }, 2000);
+}
+</script>
     <div style="text-align: center; padding: 50px 20px 10px 20px; color: #000000;">
                 <div id="emojiTrigger" class="header-glass-box" onclick="spawnEmoji(event)">
             <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
