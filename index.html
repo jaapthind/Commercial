@@ -83,6 +83,20 @@
             will-change: transform, background;
             transition: background 0.1s linear;
         }
+                #emojiContainer {
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            pointer-events: none; z-index: 9999; overflow: hidden;
+        }
+        
+        .falling-emoji {
+            position: absolute; font-size: 3rem;
+            animation: fallAnimation 3s linear forwards;
+        }
+        
+        @keyframes fallAnimation {
+            0% { transform: translateY(-50px) rotate(0deg); opacity: 1; }
+            100% { transform: translateY(100vh) rotate(360deg); opacity: 0; }
+        }
 
         /* ==========================================================================================
            3. IOS-STYLE GLASS INTERFACE & SEARCH BAR
@@ -232,10 +246,12 @@
 </head>
 <body>
     <div style="text-align: center; padding: 50px 20px 10px 20px; color: #000000;">
-        <div class="header-glass-box">
+                <div id="emojiTrigger" class="header-glass-box" onclick="spawnEmoji(event)">
             <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
             <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
         </div>
+        
+        <div id="emojiContainer"></div>
         
         <div class="search-container">
             <input type="text" id="searchInput" class="glass-search" placeholder="Search for a commercial..." onkeyup="filterCommercials()">
@@ -346,6 +362,23 @@
         function setVol(val) { vid.volume = val; }
 
         window.onkeydown = (e) => { if(e.key === 'Escape') closeVideo(); };
+
+                const emojiBank = ["😀","😃","😄","😁","😆","😅","😂","🤣","🥲","🥹","😊","😇","🙂","🙃","😉","😌","😍","🥰","😘","😗","😙","😚","😋","😛","😝","😜","🤪","🤨","🧐","🤓","😎","🥸","🤩","🥳","😏","😒","😞","😔","😟","😕","🙁","☹️","😣","😖","😫","😩","🥺","😢","😭","😤","😠","😡","🤬","🤯","😳","🥵","🥶","😱","😨","😰","😥","😓","🤗","🤔","🤭","🤫","🤥","😶","😐","😑","😬","🙄","😯","😦","😧","😮","😲","🥱","😴","🤤","😪","😵","🤐","🥴","🤢","🤮","🤧","😷","🤒","🤕","🤑","🤠","😈","👿","👹","👺","🤡","💩","👻","💀","☠️","👽","👾","🤖","🎃","😺","😸","😹","😻","😼","😽","🙀","😿","😾","👋","🤚","🖐","✋","🖖","👌","🤌","🤏","✌️","🤞","🤟","🤘","🤙","👈","👉","👆","🖕","👇","☝️","👍","👎","✊","👊","🤛","🤜","👏","🙌","👐","🤲","🤝","🙏","✍️","💅","🤳","💪","🦾","🦵","🦿","🦶","👣","👂","🦻","👃","🫀","🫁","🧠","🦷","🦴","👀","👁","👅","👄","💋","🩸","🍎","🍐","🍊","🍋","🍌","🍉","🍇","🍓","🫐","🍈","🍒","🍑","🥭","🍍","🥥","🥝","🍅","🍆","🥑","🥦","🥬","🥒","🌶","🫑","🌽","🥕","🫒","🧄","🧅","🥔","🍠","🥐","🥯","🍞","🥖","🥨","🧀","🥚","🍳","🧈","🥞","🧇","🥓","🥩","🍗","🍖","🦴","🌭","🍔","🍟","🍕","🫓","🥪","🥙","🧆","🌮","🌯","🥗","🥘","🥫","🍝","🍜","🍲","🍛","🍣","🍱","🥟","🦪","🍤","🍙","🍚","🍘","🍥","🥠","🥮","🍢","🍡","🍧","🍨","🍦","🥧","🧁","🍰","🎂","🍮","🍭","🍬","🍫","🍿","🍩","🍪","🌰","🥜","🍯","🥛","☕️","🫖","🍵","🍶","🍾","🍷","🍸","🍹","🍺","🍻","🥂","🥃","🥤","🧋","🧃","🧉","🧊"];
+        
+        function spawnEmoji(e) {
+            const emoji = document.createElement('div');
+            emoji.className = 'falling-emoji';
+            emoji.innerText = emojiBank[Math.floor(Math.random() * emojiBank.length)];
+            
+            // Position it at click location
+            emoji.style.left = e.clientX + 'px';
+            emoji.style.top = (e.clientY + 20) + 'px';
+            
+            document.getElementById('emojiContainer').appendChild(emoji);
+            
+            // Remove from DOM after animation
+            setTimeout(() => { emoji.remove(); }, 3000);
+        }
     </script>
 </body>
 </html>
