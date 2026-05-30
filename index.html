@@ -90,7 +90,7 @@
         
         .falling-emoji {
             position: absolute; font-size: 3rem;
-            animation: fallAnimation 3s linear forwards;
+            animation: fallAnimation 6s linear forwards;
         }
         
         @keyframes fallAnimation {
@@ -376,7 +376,7 @@
             document.getElementById('emojiContainer').appendChild(emoji);
             
             // Remove from DOM after animation
-            setTimeout(() => { emoji.remove(); }, 3000);
+            setTimeout(() => { emoji.remove(); }, 6000);
         }
     </script>
 </body>
