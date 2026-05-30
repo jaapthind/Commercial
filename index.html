@@ -139,6 +139,29 @@
             text-transform: uppercase; 
             letter-spacing: 3px;
         }
+        /* ==========================================================================================
+   ULTRA-ADAPTIVE FULL-SCREEN LOGO BACKGROUND MASK OVERLAY
+   ========================================================================================== */
+        .background-logo-mask {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            z-index: -1;         /* Sits directly above the body gradient, behind all text and buttons */
+            pointer-events: none; /* Let's all user mouse clicks pass straight through to the pills */
+            
+            /* Image Loading & Formatting Core */
+            background-image: url('logofinal.png'); 
+            background-repeat: no-repeat;  /* Stops the image from repeating like tiles */
+            background-position: center;   /* Anchors the center of the image directly to the middle of the screen */
+            
+            /* The Adaptive Coverage Secret Tweak */
+            background-size: cover;        /* Scales the image dynamically so it always fills 100% width and height, bleeding off-screen to prevent white space */
+            
+            /* 80% Lightened Opacity Filter Blur */
+            opacity: 0.2;                  /* 20% visibility (80% faded out) so the rainbow shifts through nicely */
+        }
         
         .glass-pill:hover {
             transform: scale(1.04) translateY(-5px);
@@ -194,6 +217,7 @@
     </style>
 </head>
 <body>
+    <div class="background-logo-mask"></div>
     <div style="text-align: center; padding: 50px 20px 10px 20px; color: #000000;">
         <h1 style="font-size: 3rem; text-transform: uppercase; margin-bottom: 10px;">Future Commercials</h1>
         <p style="font-size: 1.2rem; opacity: 0.8; letter-spacing: 2px;">A Collab made by Jaap and Gemini</p>
