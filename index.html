@@ -609,6 +609,28 @@ function toggleSuggestionBox() {
 function sendSuggestion(e) {
     e.preventDefault();
     
+    const now = new Date().getTime();
+    const twentyFourHours = 24 * 60 * 60 * 1000; // 24 hours in milliseconds
+    
+    // 1. Fetch existing tracking data from LocalStorage
+    let suggestionCount = parseInt(localStorage.getItem('suggestionCount')) || 0;
+    let firstSubmissionTime = localStorage.getItem('firstSubmissionTime');
+
+    // 2. Reset the limit tracking grid if 24 hours have completely passed
+    if (firstSubmissionTime && (now - firstSubmissionTime > twentyFourHours)) {
+        suggestionCount = 0;
+        firstSubmissionTime = null;
+        localStorage.removeItem('firstSubmissionTime');
+        localStorage.setItem('suggestionCount', '0');
+    }
+
+    // 3. ENFORCEMENT GUARDRAIL: Block the user if they hit the max cap of 2
+    if (suggestionCount >= 2) {
+        alert("Limit reached! You can only send 2 suggestions every 24 hours. Check back tomorrow! 📦");
+        return; // Halts the script so EmailJS never fires
+    }
+
+    // 4. PREPARE INTERFACE FEEDBACK
     const submitBtn = document.getElementById('submitBtn');
     const emailInput = document.getElementById('userEmail').value;
     const textInput = document.getElementById('userText').value;
@@ -616,15 +638,24 @@ function sendSuggestion(e) {
     submitBtn.innerText = "Sending...";
     submitBtn.disabled = true;
 
-    // Parameters mapped to match the variable names set up in your EmailJS Template layout
     const templateParams = {
         user_email: emailInput,
         suggestion: textInput
     };
 
+    // 5. DISPATCH VIA EMAILJS (Filled with your service and template IDs)
     emailjs.send('service_cfgf801', 'template_i673w6c', templateParams)
         .then(() => {
-            alert('Suggestion sent successfully! 📩');
+            alert('Suggestion sent successfully! 🚀');
+            
+            // 6. Update and lock the LocalStorage counters upon successful dispatch
+            suggestionCount++;
+            localStorage.setItem('suggestionCount', suggestionCount);
+            
+            if (!firstSubmissionTime) {
+                localStorage.setItem('firstSubmissionTime', now);
+            }
+
             document.getElementById('suggestionForm').reset();
             toggleSuggestionBox(); // Close box and reset icon view
         }, (error) => {
