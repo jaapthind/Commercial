@@ -9,27 +9,17 @@
         /* ==========================================================================================
            1. CORE SYSTEM ARCHITECTURE & RESET
            ========================================================================================== */
-        /* ==========================================================================================
-           1. CORE SYSTEM ARCHITECTURE & RESET (WITH DOUBLE-LAYER BACKGROUND MASK)
-           ========================================================================================== */
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body, html { 
             width: 100%; min-height: 100%; 
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; 
             overflow-x: hidden; 
-            color: #000000; /* Forces global text to black */
-
-            /* MULTIPLE BACKGROUND ENGINE:
-               Layer 1 (Top): Your translucent image blended at 80% lightened opacity with a white background tint
-               Layer 2 (Bottom): The animated moving rainbow mesh
-            */
-          /* Updated with 100% saturated neon spectrum colors */
+            color: #000000; 
             background: 
                 linear-gradient(rgba(255, 255, 255, 0.1), rgba(255, 255, 255, 0.1)), 
                 url('bglogo.png'), 
                 linear-gradient(-45deg, #ff0055, #ffeb00, #00ff66, #00ffff, #0077ff, #ff00ff);
             
-            /* Background Rules mapped respectively to each layer */
             background-repeat: no-repeat, repeat-y, no-repeat;
             background-position: top center, top center, center;
             background-size: 100% 100%, 100% auto, 400% 400%;
@@ -37,28 +27,28 @@
             
             animation: gradientShift 15s ease infinite;
         }
-        /* Custom Glass Scrollbar for Chrome, Safari, and Edge */
-                    ::-webkit-scrollbar {
-                width: 16px; /* Wider so it's super easy to see and grab */
-            }
-            ::-webkit-scrollbar-track {
-                background: rgba(255, 255, 255, 0.08); 
-                backdrop-filter: blur(40px);
-                -webkit-backdrop-filter: blur(40px);
-                border-left: 1px solid rgba(255, 255, 255, 0.2);
-            }
-            ::-webkit-scrollbar-thumb {
-                /* High-contrast neon rainbow gradient directly on the scrollbar handle */
-                background: linear-gradient(180deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
-                border-radius: 50px;
-                border: 3px solid rgba(255, 255, 255, 0.4); /* Chunky glass rim look */
-                box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6), 0 0 15px rgba(0, 0, 0, 0.5);
-            }
-            ::-webkit-scrollbar-thumb:hover {
-                border-color: rgba(255, 255, 255, 0.8);
-                box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 255, 255, 0.6);
-                cursor: pointer;
-            }
+        
+        ::-webkit-scrollbar {
+            width: 16px; 
+        }
+        ::-webkit-scrollbar-track {
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border-left: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        }
+        ::-webkit-scrollbar-thumb {
+            background: linear-gradient(180deg, #ff0055, #ffcc00, #33ff33, #00ffff, #0066ff, #cc00ff);
+            border-radius: 50px;
+            border: 3px solid rgba(255, 255, 255, 0.4); 
+            box-shadow: inset 0 0 10px rgba(255, 255, 255, 0.6), 0 0 15px rgba(0, 0, 0, 0.5);
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+            box-shadow: inset 0 0 15px rgba(255, 255, 255, 0.9), 0 0 25px rgba(255, 255, 255, 0.6);
+            cursor: pointer;
+        }
 
         @keyframes gradientShift {
             0% { background-position: 0% 50%; }
@@ -83,7 +73,7 @@
             will-change: transform, background;
             transition: background 0.1s linear;
         }
-                #emojiContainer {
+        #emojiContainer {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             pointer-events: none; z-index: 9999; overflow: hidden;
         }
@@ -99,7 +89,7 @@
         }
 
         /* ==========================================================================================
-           3. IOS-STYLE GLASS INTERFACE & SEARCH BAR
+           3. REGULAR GLASS INTERFACE & SEARCH BAR
            ========================================================================================== */
         .search-container {
             margin-top: 30px;
@@ -109,55 +99,58 @@
         }
 
         .glass-search {
-            width: 95%;             /* Fluid coverage for smaller panels */
-            max-width: 1100px;      /* Pushed past the 900px glass pill boundaries */
-            padding: 25px 40px;     /* Chunkier field height design */
-            font-size: 1.8rem;      /* Huge legible search text */
+            width: 95%;             
+            max-width: 1100px;      
+            padding: 25px 40px;     
+            font-size: 1.8rem;      
             font-weight: 700;
-            color: #000000;         /* Typing text color changed to solid black */
-            background: rgba(255, 255, 255, 0.25); /* Slightly darker white glass base for better contrast with black text */
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 2px solid rgba(255, 255, 255, 0.5);
+            color: #000000;         
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 60px;
             outline: none;
             transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25);
             letter-spacing: 1px;
         }
 
-        /* Changes the placeholder helper text color to dark charcoal grey */
         .glass-search::placeholder {
             color: rgba(0, 0, 0, 0.6);
         }
 
         .glass-search:focus {
-            background: rgba(255, 255, 255, 0.4);
-            border-color: rgba(255, 255, 255, 0.9);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.4);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0,0,0,0.2);
             transform: scale(1.02);
         }
+
         /* ==========================================================================================
-   ARCADE FRY CATCHER GAME CORE GRAPHICS
-   ========================================================================================== */
+           ARCADE FRY CATCHER GAME CORE GRAPHICS
+           ========================================================================================== */
         #fryGameCanvas {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
             z-index: 99999; display: none; pointer-events: none; background: rgba(0,0,0,0.4);
         }
-        /* Glass-tinted Red Fry Carton Basket */
+        
         #fryCarton {
             position: fixed; bottom: 40px; left: 50%; width: 120px; height: 100px;
-            background: rgba(255, 0, 85, 0.45); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px);
-            border: 3px solid #ff0055; border-radius: 10px 10px 30px 30px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border: 3px solid rgba(255, 255, 255, 0.3);
+            border-radius: 10px 10px 30px 30px;
             transform: translateX(-50%); pointer-events: none;
-            box-shadow: 0 15px 35px rgba(0,0,0,0.5), inset 0 20px 20px rgba(255,255,255,0.2);
         }
-        /* Cutout rim style for the top of the box */
+        
         #fryCarton::before {
             content: ''; position: absolute; top: -3px; left: 15%; width: 70%; height: 25px;
-            background: transparent; border-bottom: 3px solid #ff0055; border-radius: 50%;
+            background: transparent; border-bottom: 3px solid rgba(255, 255, 255, 0.3); border-radius: 50%;
         }
-        /* Falling Golden Sticks */
+        
         .falling-fry {
             position: absolute; width: 12px; height: 75px;
             background: linear-gradient(to bottom, #ffeb00, #ffaa00);
@@ -183,95 +176,82 @@
             gap: 20px; 
         }
         video::-webkit-media-controls {
-            zoom: 1.25; /* Enlarges the play, pause, fullscreen, and download buttons safely without cutting them off */
+            zoom: 1.25;
         }
         .header-glass-box {
-            margin: 0 auto 30px auto;       /* Centers the box */
-            padding: 30px;                  /* Adds breathing room inside the box */
-            max-width: 800px;               /* Keeps it from becoming too wide */
-            background: rgba(255, 255, 255, 0.2); /* Semi-transparent white */
-            backdrop-filter: blur(20px);    /* This is the secret for the "liquid glass" look */
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
-            border-radius: 30px;            /* Soft, rounded corners */
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            border-left: 1px solid rgba(255, 255, 255, 0.6);
-            border-top: 1px solid rgba(255, 255, 255, 0.6);
+            margin: 0 auto 30px auto;       
+            padding: 30px;                  
+            max-width: 800px;               
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 30px;            
         }
         
-                 .glass-pill {
+        .glass-pill {
             position: relative;
             width: 90%; 
-            max-width: 900px;       /* 2x width expansion from original 500px architecture */
-            height: 120px;          /* Massive 2x chunkier target field */
-            background: rgba(255, 255, 255, 0.12);
-            backdrop-filter: blur(40px);
-            -webkit-backdrop-filter: blur(40px);
-            border: 2px solid rgba(255, 255, 255, 0.35); /* Solid glass outline */
-            border-radius: 60px;    /* Keeps the perfect capsule form factor */
+            max-width: 900px;       
+            height: 120px;          
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+            border-radius: 60px;    
             display: flex; align-items: center; justify-content: center;
             color: white; 
-            font-size: 2.2rem;      /* Huge text size so the brand labels look massive */
-            font-weight: 800;       /* Extra bold stance */
+            font-size: 2.2rem;      
+            font-weight: 800;       
             cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Snappy bounce effect */
-            box-shadow: 0 15px 35px rgba(0,0,0,0.25), inset 0 0 15px rgba(255,255,255,0.2);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275); 
             text-transform: uppercase; 
             letter-spacing: 3px;
         }
-        /* ==========================================================================================
-   ULTRA-ADAPTIVE FULL-SCREEN LOGO BACKGROUND MASK OVERLAY
-   ========================================================================================== */
-        /* ==========================================================================================
-   SEAMLESS VERTICAL SCROLLING BACKGROUND MASK OVERLAY
-   ========================================================================================== */
 
-        
         .glass-pill:hover {
             transform: scale(1.04) translateY(-5px);
-            background: rgba(255, 255, 255, 0.25);
-            border: 2px solid rgba(255, 255, 255, 0.7);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.4), inset 0 0 20px rgba(255,255,255,0.4);
+            background: rgba(255, 255, 255, 0.3);
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.2);
         }
+
         /* ==========================================================================================
-   MINI LIQUID GLASS SUGGESTION BOX SYSTEM
-   ========================================================================================== */
+           MINI REGULAR GLASS SUGGESTION BOX SYSTEM
+           ========================================================================================== */
         #suggestionWrapper {
             position: fixed;
-            bottom: 60px; /* Bumped up slightly so it doesn't clip off the bottom edge when scaled */
-            left: 60px;   /* Shifted right slightly so it doesn't clip off the left screen edge */
+            bottom: 60px; 
+            left: 60px;   
             z-index: 5000;
             display: flex;
             align-items: flex-end;
-            
-            /* THE 1 LINE TWEAK: Scales the entire suggestion system up by 2.5x */
             transform: scale(2); 
-            transform-origin: bottom left; /* Ensures it scales outward from the bottom-left corner cleanly */
+            transform-origin: bottom left; 
         }
         
-        /* Tiny Closed State Circle */
         #suggestionIcon {
             width: 30px;
             height: 30px;
             background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 50%;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 1.8rem;
             cursor: pointer;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
             transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
         }
-        /* ==========================================================================================
-   PREMIUM BLACK SPLASH ENTER SCREEN
-   ========================================================================================== */
+
         #introOverlay {
             position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-            background: #2edfe8; z-index: 999999; /* Sits on top of absolutely everything */
+            background: #2edfe8; z-index: 999999;
             display: flex; flex-direction: column; align-items: center; justify-content: center;
             cursor: pointer; transition: opacity 3.5s ease, visibility 3.5s ease;
         }
@@ -290,20 +270,19 @@
         
         #suggestionIcon:hover {
             transform: scale(1.1) translateY(-5px);
-            background: rgba(255, 255, 255, 0.35);
+            background: rgba(255, 255, 255, 0.3);
         }
         
-        /* Hidden/Expanded Form Box Container */
         #suggestionBoxContent {
             display: none;
             width: 320px;
             padding: 25px;
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(35px);
-            -webkit-backdrop-filter: blur(35px);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 25px;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.3);
             flex-direction: column;
             gap: 15px;
             position: relative;
@@ -317,7 +296,6 @@
             color: #000000;
         }
         
-        /* Form Inputs styling */
         #suggestionForm {
             display: flex;
             flex-direction: column;
@@ -327,8 +305,11 @@
         #suggestionForm input, #suggestionForm textarea {
             width: 100%;
             padding: 12px;
-            background: rgba(255, 255, 255, 0.25);
-            border: 1px solid rgba(255, 255, 255, 0.4);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             outline: none;
             font-family: inherit;
@@ -345,11 +326,13 @@
             color: rgba(0, 0, 0, 0.6);
         }
         
-        /* Submit Button with clean feedback */
         #submitBtn {
             padding: 12px;
-            background: rgba(255, 255, 255, 0.4);
-            border: 1px solid rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
             border-radius: 12px;
             cursor: pointer;
             font-weight: bold;
@@ -359,10 +342,9 @@
         }
         
         #submitBtn:hover {
-            background: rgba(255, 255, 255, 0.6);
+            background: rgba(255, 255, 255, 0.3);
             transform: translateY(-2px);
         }
-        
         
         .close-box {
             position: absolute;
@@ -386,8 +368,8 @@
 
         #mainVideo { 
             width: 95vw;             
-            max-width: 90%;    /* Forces at least a 10% total background edge on ANY screen size */        
-            max-height: 80vh;  /* Keeps the video from taller screens overflowing vertically */
+            max-width: 90%;    
+            max-height: 80vh;  
             height: auto;
             border-radius: 20px; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
@@ -397,24 +379,31 @@
 
         .controls {
             position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
-            padding: 15px 35px; background: rgba(255,255,255,0.15); border-radius: 50px;
-            backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.3);
-            box-shadow: 0 10px 30px rgba(0,0,0,0.4);
+            padding: 15px 35px; border-radius: 50px;
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .x-close {
             position: absolute; top: 40px; right: 40px; width: 50px; height: 50px;
-            background: rgba(255,255,255,0.2); border-radius: 50%;
+            border-radius: 50%;
             display: flex; align-items: center; justify-content: center;
             color: white; font-size: 22px; cursor: pointer; transition: 0.3s;
             z-index: 1001;
-            border: 1px solid rgba(255,255,255,0.2);
+            background: rgba(255, 255, 255, 0.2);
+            backdrop-filter: blur(5px);
+            -webkit-backdrop-filter: blur(5px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
         }
 
         .x-close:hover { 
-            background: rgba(255,255,255,0.4); 
+            background: rgba(255, 255, 255, 0.3);
             transform: rotate(90deg); 
-            border-color: rgba(255,255,255,0.6);
+            border-color: rgba(255, 255, 255, 0.4);
         }
         
         input[type=range] { width: 200px; cursor: pointer; accent-color: white; }
@@ -505,7 +494,6 @@ function enterSite() {
         <button class="glass-pill" onclick="openVideo('mono.mp4')">Monoprix (France-based store)</button>
         <button class="glass-pill" onclick="openVideo('door1.mp4')">DoorDash #2</button>
 
-
     </div>
 
     <div id="videoOverlay">
@@ -582,8 +570,7 @@ function enterSite() {
             emoji.className = 'falling-emoji';
             emoji.innerText = emojiBank[Math.floor(Math.random() * emojiBank.length)];
             
-            // Position it at click location
-// Position it at a random horizontal spot (0 to 100% width)
+            // Position it at a random horizontal spot (0 to 100% width)
             emoji.style.left = Math.random() * 95 + 'vw';
             emoji.style.top = (e.clientY + 20) + 'px';
             
@@ -593,8 +580,8 @@ function enterSite() {
             setTimeout(() => { emoji.remove(); }, 6000);
         }
         /* ==========================================================================================
-   SUGGESTION BOX LOGIC & EMAILJS UTILITIES
-   ========================================================================================== */
+           SUGGESTION BOX LOGIC & EMAILJS UTILITIES
+           ========================================================================================== */
 let isBoxOpen = false;
 
 function toggleSuggestionBox() {
