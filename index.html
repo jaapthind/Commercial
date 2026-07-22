@@ -175,9 +175,6 @@
             padding: 20px 0 100px 0; 
             gap: 20px; 
         }
-        video::-webkit-media-controls {
-            zoom: 1.25;
-        }
         .header-glass-box {
             margin: 0 auto 30px auto;       
             padding: 30px;                  
@@ -357,7 +354,7 @@
         }
 
         /* ==========================================================================================
-           4. VIDEO PLAYER CENTERED OVERLAY
+           4. VIDEO PLAYER CENTERED OVERLAY WITH LIQUID GLASS CONTROLS
            ========================================================================================== */
         #videoOverlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
@@ -366,25 +363,101 @@
             z-index: 1000; opacity: 0; transition: opacity 0.5s ease;
         }
 
-        #mainVideo { 
+        #videoContainer {
+            position: relative;
+            display: flex;
+            justify-content: center;
+            align-items: center;
             width: 95vw;             
             max-width: 90%;    
             max-height: 80vh;  
+        }
+
+        #mainVideo { 
+            width: 100%;             
             height: auto;
+            max-height: 80vh;  
             border-radius: 20px; 
             box-shadow: 0 20px 60px rgba(0,0,0,0.6);
             border: 1px solid rgba(255,255,255,0.3);
             background: #000;
         }
 
-        .controls {
-            position: absolute; bottom: 50px; display: flex; align-items: center; gap: 20px;
-            padding: 15px 35px; border-radius: 50px;
-            background: rgba(255, 255, 255, 0.2);
-            backdrop-filter: blur(5px);
-            -webkit-backdrop-filter: blur(5px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);
+        /* Liquid Glass Controls Styling */
+        .liquid-glass-controls {
+            position: absolute;
+            bottom: 20px;
+            width: 85%;
+            max-width: 700px;
+            padding: 15px 25px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: rgba(255, 255, 255, 0.25);
+            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.37);
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            border-radius: 50px;
+            border: 1px solid rgba(255, 255, 255, 0.4);
+            border-bottom: 2px solid rgba(255, 255, 255, 0.6);
+            z-index: 1002;
+            transition: opacity 0.3s ease;
+            opacity: 0;
+        }
+
+        #videoContainer:hover .liquid-glass-controls {
+            opacity: 1;
+        }
+
+        .control-btn {
+            background: transparent;
+            border: none;
+            color: white;
+            font-size: 20px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            outline: none;
+            font-family: sans-serif;
+            font-weight: bold;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .liquid-glass-controls input[type=range] {
+            -webkit-appearance: none;
+            background: rgba(255, 255, 255, 0.4);
+            height: 6px;
+            border-radius: 3px;
+            cursor: pointer;
+            outline: none;
+            flex-grow: 1;
+            box-shadow: inset 0 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .liquid-glass-controls input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            width: 16px;
+            height: 16px;
+            background: white;
+            border-radius: 50%;
+            box-shadow: 0 0 10px rgba(0,0,0,0.3);
+            cursor: pointer;
+        }
+
+        #volBar {
+            flex-grow: 0;
+            width: 80px !important;
+        }
+
+        #timeDisplay {
+            color: white;
+            font-family: sans-serif;
+            font-size: 14px;
+            font-weight: 600;
+            text-shadow: 0 1px 3px rgba(0,0,0,0.4);
+            min-width: 40px;
+            text-align: right;
         }
 
         .x-close {
@@ -405,8 +478,6 @@
             transform: rotate(90deg); 
             border-color: rgba(255, 255, 255, 0.4);
         }
-        
-        input[type=range] { width: 200px; cursor: pointer; accent-color: white; }
     </style>
     <script type="text/javascript" src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script type="text/javascript">
@@ -498,10 +569,15 @@ function enterSite() {
 
     <div id="videoOverlay">
         <div class="x-close" onclick="closeVideo()">✕</div>
-        <video id="mainVideo" controls></video>
-        <div class="controls">
-            <span style="color:white; font-weight:bold; letter-spacing: 1px;">🔊Volume</span>
-            <input type="range" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+        <div id="videoContainer">
+            <video id="mainVideo"></video>
+            <div class="liquid-glass-controls">
+                <button id="playPauseBtn" class="control-btn">⏸</button>
+                <input type="range" id="progressBar" min="0" max="100" value="0" step="0.1">
+                <span id="timeDisplay">0:00</span>
+                <span style="color:white; margin-left: 10px; font-size: 18px;">🔊</span>
+                <input type="range" id="volBar" min="0" max="1" step="0.01" value="0.5" oninput="setVol(this.value)">
+            </div>
         </div>
     </div>
 
@@ -539,16 +615,22 @@ function enterSite() {
         animateHSL();
 
         /* ==========================================================================================
-           7. VIDEO OVERLAY & CONTROL LOGIC
+           7. VIDEO OVERLAY & CUSTOM LIQUID GLASS CONTROL LOGIC
            ========================================================================================== */
         const ov = document.getElementById('videoOverlay');
         const vid = document.getElementById('mainVideo');
+        const playPauseBtn = document.getElementById('playPauseBtn');
+        const progressBar = document.getElementById('progressBar');
+        const timeDisplay = document.getElementById('timeDisplay');
+        const volBar = document.getElementById('volBar');
 
         function openVideo(src) {
             vid.src = src;
             ov.style.display = 'flex';
             requestAnimationFrame(() => { ov.style.opacity = '1'; });
             vid.play();
+            playPauseBtn.innerText = '⏸';
+            vid.volume = volBar.value;
         }
 
         function closeVideo() {
@@ -561,6 +643,32 @@ function enterSite() {
         }
 
         function setVol(val) { vid.volume = val; }
+
+        playPauseBtn.onclick = () => {
+            if(vid.paused) {
+                vid.play();
+                playPauseBtn.innerText = '⏸';
+            } else {
+                vid.pause();
+                playPauseBtn.innerText = '▶';
+            }
+        };
+
+        vid.ontimeupdate = () => {
+            if(!vid.duration) return;
+            const percent = (vid.currentTime / vid.duration) * 100;
+            progressBar.value = percent;
+            
+            let mins = Math.floor(vid.currentTime / 60);
+            let secs = Math.floor(vid.currentTime % 60);
+            if(secs < 10) secs = '0' + secs;
+            timeDisplay.innerText = mins + ':' + secs;
+        };
+
+        progressBar.oninput = (e) => {
+            const time = (e.target.value / 100) * vid.duration;
+            vid.currentTime = time;
+        };
 
         window.onkeydown = (e) => { if(e.key === 'Escape') closeVideo(); };
 
